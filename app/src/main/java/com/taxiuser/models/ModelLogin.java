@@ -40,6 +40,16 @@ public class ModelLogin implements Serializable {
 
         private String profile_image;
 
+        private String card_number;
+
+        private String expiry_month;
+
+        private String cvc_code;
+
+        private String expiry_year;
+
+        private String covid_screen_status;
+
         private String email;
 
         private String mobile;
@@ -47,6 +57,12 @@ public class ModelLogin implements Serializable {
         private String password;
 
         private String register_id;
+
+        private String workplace;
+
+        private String work_lon;
+
+        private String work_lat;
 
         private String driver_lisence_img;
 
@@ -131,6 +147,70 @@ public class ModelLogin implements Serializable {
         private String step;
 
         private String brand;
+
+        public String getCovid_screen_status() {
+            return covid_screen_status;
+        }
+
+        public void setCovid_screen_status(String covid_screen_status) {
+            this.covid_screen_status = covid_screen_status;
+        }
+
+        public String getCard_number() {
+            return card_number;
+        }
+
+        public void setCard_number(String card_number) {
+            this.card_number = card_number;
+        }
+
+        public String getExpiry_month() {
+            return expiry_month;
+        }
+
+        public void setExpiry_month(String expiry_month) {
+            this.expiry_month = expiry_month;
+        }
+
+        public String getCvc_code() {
+            return cvc_code;
+        }
+
+        public void setCvc_code(String cvc_code) {
+            this.cvc_code = cvc_code;
+        }
+
+        public String getExpiry_year() {
+            return expiry_year;
+        }
+
+        public void setExpiry_year(String expiry_year) {
+            this.expiry_year = expiry_year;
+        }
+
+        public String getWorkplace() {
+            return workplace;
+        }
+
+        public void setWorkplace(String workplace) {
+            this.workplace = workplace;
+        }
+
+        public String getWork_lon() {
+            return work_lon;
+        }
+
+        public void setWork_lon(String work_lon) {
+            this.work_lon = work_lon;
+        }
+
+        public String getWork_lat() {
+            return work_lat;
+        }
+
+        public void setWork_lat(String work_lat) {
+            this.work_lat = work_lat;
+        }
 
         public String getProfile_image() {
             return profile_image;

@@ -6,6 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_9sdp"
+        app:cardElevation="@dimen/_10sdp"
         android:elevation="@dimen/_40sdp"
         app:cardCornerRadius="@dimen/_10sdp">
 
@@ -20,24 +21,23 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:id="@+id/tvDateTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_medium"
                     android:text="23-03-2021  11:30"
-                    android:textColor="@color/textColor"
+                    android:textColor="@color/purple_700"
                     android:textSize="@dimen/_12sdp" />
 
                 <TextView
+                    android:id="@+id/tvStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:fontFamily="@font/poppins_medium"
                     android:text="Complete"
-                    android:paddingLeft="@dimen/_10sdp"
-                    android:paddingRight="@dimen/_10sdp"
-                    android:background="@drawable/round_green_back"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
+                    android:textAllCaps="true"
+                    android:textColor="@color/red"
                     android:textSize="@dimen/_12sdp" />
 
             </RelativeLayout>
@@ -55,7 +55,7 @@
                 android:weightSum="1">
 
                 <RelativeLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_below="@+id/ivMenu"
                     android:layout_weight=".85"
@@ -161,11 +161,11 @@
 
                     <ImageView
                         android:id="@+id/GoDetail"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_width="@dimen/_10sdp"
+                        android:layout_height="@dimen/_15sdp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:visibility="gone"
+                        android:layout_marginRight="@dimen/_10sdp"
                         android:background="@drawable/right_arrow" />
 
                     <TextView
@@ -176,14 +176,24 @@
                         android:fontFamily="@font/poppins_regular"
                         android:gravity="center_horizontal"
                         android:text="120$"
-                        android:visibility="gone"
                         android:textColor="@color/textColor"
-                        android:textSize="@dimen/_12sdp" />
+                        android:textSize="@dimen/_12sdp"
+                        android:visibility="gone" />
 
 
                 </RelativeLayout>
 
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvPoolText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/green_spalsh"
+                android:textSize="@dimen/_12sdp" />
 
         </LinearLayout>
 

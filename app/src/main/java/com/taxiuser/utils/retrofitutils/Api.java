@@ -18,6 +18,107 @@ public interface Api {
     @POST("change_password")
     Call<ResponseBody> changePass(@FieldMap Map<String, String> params);
 
+    @POST("get_faq")
+    Call<ResponseBody> getAllFAQInformation();
+
+    @FormUrlEncoded
+    @POST("insert_chat")
+    Call<ResponseBody> insertChatApiCall(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @POST("get_chat")
+    Call<ResponseBody> getConversationApiCAll(@FieldMap Map<String, String> params);
+
+    @POST("get_donation")
+    Call<ResponseBody> gteDonationApiCall();
+
+    @FormUrlEncoded
+    @POST("get_schedule_booking")
+    Call<ResponseBody> getScheduleBooking(@FieldMap Map<String, String> params);
+
+    @POST("get_admin_notification")
+    Call<ResponseBody> getNotificationAdmin();
+
+    @FormUrlEncoded
+    @POST("delete_account")
+    Call<ResponseBody> deleteAccountApiCall(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @POST("update_user_address")
+    Call<ResponseBody> updateAddressApiCall(@FieldMap Map<String, String> params);
+
+    @Multipart
+    @POST("update_profile")
+    Call<ResponseBody> updateDriverCallApi(@Part("user_id") RequestBody user_id,
+                                           @Part("first_name") RequestBody first_name,
+                                           @Part("last_name") RequestBody last_name,
+                                           @Part("mobile") RequestBody mobile,
+                                           @Part("email") RequestBody email,
+                                           @Part("address") RequestBody address,
+                                           @Part("lat") RequestBody lat,
+                                           @Part("lon") RequestBody lon,
+                                           @Part("workplace") RequestBody workplace,
+                                           @Part("work_lon") RequestBody work_lon,
+                                           @Part("work_lat") RequestBody work_lat,
+                                           @Part("city") RequestBody city,
+                                           @Part MultipartBody.Part file1);
+
+    @FormUrlEncoded
+    @POST("add_wallet")
+    Call<ResponseBody> addWalletAmount(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @POST("wallet_transfer")
+    Call<ResponseBody> walletTransferApiCall(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @POST("get_my_transaction")
+    Call<ResponseBody> getTransactionApiCall(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @POST("check_valid_login")
+    Call<ResponseBody> checkLoginValidCall(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @POST("get_schedule_booking_count")
+    Call<ResponseBody> getScheduleBookingCount(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @POST("get_booking_details")
+    Call<ResponseBody> getCurrentBookingDetails(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @POST("cancel_ride")
+    Call<ResponseBody> cancelRideApi(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @POST("get_user_history")
+    Call<ResponseBody> getHistoryApiCall(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @POST("offer_pool_to_booking_request")
+    Call<ResponseBody> sendPoolRequestToDriver(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @POST("case_payment")
+    Call<ResponseBody> paymentApiCall(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @POST("strips_payment")
+    Call<ResponseBody> stripePaymentApiCAll(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @POST("emergency_number")
+    Call<ResponseBody> addContactApiCall(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @POST("get_emergency")
+    Call<ResponseBody> getAllEmerContacts(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @POST("add_rating_review")
+    Call<ResponseBody> addReviewsAndRating(@FieldMap Map<String, String> params);
+
     @FormUrlEncoded
     @POST("update_lat_lon")
     Call<Map<String, String>> updateLocation(@FieldMap Map<String, String> params);
@@ -25,6 +126,38 @@ public interface Api {
     @FormUrlEncoded
     @POST("forgot_password")
     Call<ResponseBody> forgotPass(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @POST("add_card_data")
+    Call<ResponseBody> addCardApiCall(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @POST("favorite_driver")
+    Call<ResponseBody> favouriteDriverApiCall(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @POST("get_favorite_all_driver")
+    Call<ResponseBody> getAllDrivers(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @POST("delete_emergency")
+    Call<ResponseBody> deleteEmergencyContactApi(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @POST("add_contact_us")
+    Call<ResponseBody> contactUsApiCall(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @POST("get_user_address")
+    Call<ResponseBody> getRecentLocationApi(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @POST("update_user_address")
+    Call<ResponseBody> updateUserAddressApi(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @POST("add_user_address")
+    Call<ResponseBody> addRecentLocationApi(@FieldMap Map<String, String> params);
 
     @FormUrlEncoded
     @POST("get_booking_history")
@@ -69,6 +202,14 @@ public interface Api {
     @FormUrlEncoded
     @POST("driver_accept_and_Cancel_request")
     Call<ResponseBody> acceptCancelOrderCall(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @POST("get_neareast_offer_pool_request")
+    Call<ResponseBody> getAvailablePoolDriver(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @POST("cancel_ride")
+    Call<ResponseBody> cancelRequestForUser(@FieldMap Map<String, String> params);
 
     @FormUrlEncoded
     @POST("get_current_booking")
@@ -132,6 +273,9 @@ public interface Api {
                                            @Part("type") RequestBody type,
                                            @Part("step") RequestBody step,
                                            @Part("user_name") RequestBody username,
+                                           @Part("workplace") RequestBody workplace,
+                                           @Part("work_lat") RequestBody work_lat,
+                                           @Part("work_lon") RequestBody work_lon,
                                            @Part MultipartBody.Part file1);
 
     @Multipart

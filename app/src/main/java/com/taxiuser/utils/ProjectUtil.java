@@ -104,6 +104,28 @@ public class ProjectUtil {
         return false;
     }
 
+    public static void exitAppDialog(Context mContext) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setMessage(mContext.getString(R.string.close_app_text))
+                .setCancelable(false)
+                .setPositiveButton(mContext.getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        intent.addCategory(Intent.CATEGORY_HOME);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        mContext.startActivity(intent);
+                    }
+                }).setNegativeButton(mContext.getString(R.string.no), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
     public static void logoutAppDialog(Context mContext) {
 
         SharedPref sharedPref = SharedPref.getInstance(mContext);
@@ -180,6 +202,13 @@ public class ProjectUtil {
         str = dateFormat.format(date);
         return str;
     }
+
+    public static String getCurrentDateNEW() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = dateFormat.format(new Date());
+        return formattedDate;
+    }
+
 
     public static String getRealPathFromURI(Context mContext, Uri contentUri) {
         // TODO: get realpath from uri
@@ -328,7 +357,7 @@ public class ProjectUtil {
     }
 
     public static String getCurrentTime() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm a");
         String formattedDate = dateFormat.format(new Date());
         return formattedDate;
     }

@@ -23,6 +23,15 @@
                     android:layout_height="wrap_content"
                     android:background="@color/yellow">
 
+                    <ImageView
+                        android:id="@+id/ivSettings"
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:src="@drawable/iv_settings" />
+
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/userImg"
                         android:layout_width="@dimen/_100sdp"
@@ -105,7 +114,63 @@
                             android:foreground="?attr/selectableItemBackgroundBorderless"
                             android:gravity="center_vertical"
                             android:padding="@dimen/_7sdp"
-                            android:text="@string/profile"
+                            android:text="@string/my_profile"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_15sdp" />
+
+                        <TextView
+                            android:id="@+id/tvBusinessProfile"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:foreground="?attr/selectableItemBackgroundBorderless"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/_7sdp"
+                            android:text="@string/business_profile"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_15sdp" />
+
+                        <TextView
+                            android:id="@+id/tvNotification"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:foreground="?attr/selectableItemBackgroundBorderless"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/_7sdp"
+                            android:text="@string/notifications"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_15sdp" />
+
+                        <TextView
+                            android:id="@+id/tvChangeLang"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:foreground="?attr/selectableItemBackgroundBorderless"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/_7sdp"
+                            android:text="@string/change_language"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_15sdp" />
+
+                        <TextView
+                            android:id="@+id/tvPayment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:foreground="?attr/selectableItemBackgroundBorderless"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/_7sdp"
+                            android:text="@string/payment"
                             android:textAllCaps="false"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_15sdp" />
@@ -122,7 +187,8 @@
                             android:text="@string/message"
                             android:textAllCaps="false"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/_15sdp" />
+                            android:textSize="@dimen/_15sdp"
+                            android:visibility="gone" />
 
                         <TextView
                             android:id="@+id/tvWallet"
@@ -133,7 +199,7 @@
                             android:foreground="?attr/selectableItemBackgroundBorderless"
                             android:gravity="center_vertical"
                             android:padding="@dimen/_7sdp"
-                            android:text="@string/wallet"
+                            android:text="@string/my_wallet"
                             android:textAllCaps="false"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_15sdp" />
@@ -153,7 +219,7 @@
                             android:textSize="@dimen/_15sdp" />
 
                         <TextView
-                            android:id="@+id/tvPromo"
+                            android:id="@+id/tvActiveRides"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/_15sdp"
@@ -161,10 +227,151 @@
                             android:foreground="?attr/selectableItemBackgroundBorderless"
                             android:gravity="center_vertical"
                             android:padding="@dimen/_7sdp"
-                            android:text="@string/promocode"
+                            android:text="@string/active_rides"
                             android:textAllCaps="false"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_15sdp" />
+
+                        <TextView
+                            android:id="@+id/tvPersonalDetails"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:foreground="?attr/selectableItemBackgroundBorderless"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/_7sdp"
+                            android:text="@string/personal_details"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_15sdp" />
+
+                        <TextView
+                            android:id="@+id/tvEmergencyContact"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:foreground="?attr/selectableItemBackgroundBorderless"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/_7sdp"
+                            android:text="@string/emergency_contacts"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_15sdp" />
+
+                        <TextView
+                            android:id="@+id/tvfavouriteDrivers"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:foreground="?attr/selectableItemBackgroundBorderless"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/_7sdp"
+                            android:text="@string/favourite_drivers"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_15sdp" />
+
+                        <TextView
+                            android:id="@+id/tvChangeCurrency"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:foreground="?attr/selectableItemBackgroundBorderless"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/_7sdp"
+                            android:text="@string/change_currency"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_15sdp" />
+
+                        <TextView
+                            android:id="@+id/tvContactUs"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:foreground="?attr/selectableItemBackgroundBorderless"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/_7sdp"
+                            android:text="@string/contact_us"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_15sdp" />
+
+                        <TextView
+                            android:id="@+id/tvFAQ"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:foreground="?attr/selectableItemBackgroundBorderless"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/_7sdp"
+                            android:text="@string/faq"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_15sdp" />
+
+                        <TextView
+                            android:id="@+id/tvDonate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:foreground="?attr/selectableItemBackgroundBorderless"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/_7sdp"
+                            android:text="@string/donate"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_15sdp" />
+
+                        <TextView
+                            android:id="@+id/tvLiveChat"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:foreground="?attr/selectableItemBackgroundBorderless"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/_7sdp"
+                            android:text="@string/live_chat"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_15sdp" />
+
+                        <TextView
+                            android:id="@+id/tvSupport"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:foreground="?attr/selectableItemBackgroundBorderless"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/_7sdp"
+                            android:text="@string/support"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_15sdp" />
+
+                        <TextView
+                            android:id="@+id/tvInviteFrd"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:foreground="?attr/selectableItemBackgroundBorderless"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/_7sdp"
+                            android:text="@string/invite_frd"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_15sdp"
+                            android:visibility="gone" />
 
                         <TextView
                             android:id="@+id/tvChnageLang"
@@ -178,7 +385,8 @@
                             android:text="@string/change_language"
                             android:textAllCaps="false"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/_15sdp" />
+                            android:textSize="@dimen/_15sdp"
+                            android:visibility="gone" />
 
                         <EditText
                             android:id="@+id/signout"
@@ -186,6 +394,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/_15sdp"
                             android:layout_marginTop="@dimen/_20sdp"
+                            android:layout_marginBottom="@dimen/_10sdp"
                             android:backgroundTint="@color/red"
                             android:cursorVisible="false"
                             android:focusable="false"

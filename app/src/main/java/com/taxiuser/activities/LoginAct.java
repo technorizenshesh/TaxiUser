@@ -1,16 +1,29 @@
 package com.taxiuser.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
+import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.databinding.DataBindingUtil;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -23,6 +36,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
@@ -39,6 +58,7 @@ import com.taxiuser.databinding.ActivityLoginBinding;
 import com.taxiuser.models.ModelLogin;
 import com.taxiuser.utils.AppConstant;
 import com.taxiuser.utils.InternetConnection;
+import com.taxiuser.utils.MyApplication;
 import com.taxiuser.utils.ProjectUtil;
 import com.taxiuser.utils.SharedPref;
 import com.taxiuser.utils.retrofitutils.Api;
@@ -60,6 +80,10 @@ public class LoginAct extends AppCompatActivity {
     ActivityLoginBinding binding;
     SharedPref sharedPref;
     ModelLogin modelLogin;
+    private Location currentLocation;
+    private LocationRequest mLocationRequest;
+    private long UPDATE_INTERVAL = 4000;  /* 5 secs */
+    private long FASTEST_INTERVAL = 4000; /* 2 sec */
     private String registerId = "";
     private FirebaseAuth mAuth;
     GoogleSignInClient mGoogleSignInClient;
@@ -100,9 +124,119 @@ public class LoginAct extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         itit();
+
+        startLocationUpdates();
+
+    }
+
+    private void changeLangDialog() {
+        Dialog dialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.change_language_dialog);
+        dialog.setCancelable(true);
+
+        Button btContinue = dialog.findViewById(R.id.btContinue);
+        RadioButton radioEng = dialog.findViewById(R.id.radioEng);
+        RadioButton radioUrdu = dialog.findViewById(R.id.radioUrdu);
+        RadioButton radioChinese = dialog.findViewById(R.id.radioChinese);
+        RadioButton radioArabic = dialog.findViewById(R.id.radioArabic);
+        RadioButton radioFrench = dialog.findViewById(R.id.radioFrench);
+
+        if ("en".equals(sharedPref.getLanguage("lan"))) {
+            radioEng.setChecked(true);
+        } else if ("ar".equals(sharedPref.getLanguage("lan"))) {
+            radioArabic.setChecked(true);
+        } else if ("fr".equals(sharedPref.getLanguage("lan"))) {
+            radioFrench.setChecked(true);
+        } else if ("ur".equals(sharedPref.getLanguage("lan"))) {
+            radioUrdu.setChecked(true);
+        } else if ("zh".equals(sharedPref.getLanguage("lan"))) {
+            radioChinese.setChecked(true);
+        } else {
+            radioEng.setChecked(true);
+        }
+
+        dialog.getWindow().setBackgroundDrawableResource(R.color.translucent_black);
+
+        btContinue.setOnClickListener(v -> {
+            if (radioEng.isChecked()) {
+                ProjectUtil.updateResources(mContext, "en");
+                sharedPref.setlanguage("lan", "en");
+                finish();
+                startActivity(new Intent(mContext, LoginAct.class));
+                dialog.dismiss();
+            } else if (radioUrdu.isChecked()) {
+                ProjectUtil.updateResources(mContext, "ur");
+                sharedPref.setlanguage("lan", "ur");
+                finish();
+                startActivity(new Intent(mContext, LoginAct.class));
+                dialog.dismiss();
+            } else if (radioArabic.isChecked()) {
+                ProjectUtil.updateResources(mContext, "ar");
+                sharedPref.setlanguage("lan", "ar");
+                finish();
+                startActivity(new Intent(mContext, LoginAct.class));
+                dialog.dismiss();
+            } else if (radioFrench.isChecked()) {
+                ProjectUtil.updateResources(mContext, "fr");
+                sharedPref.setlanguage("lan", "fr");
+                finish();
+                startActivity(new Intent(mContext, LoginAct.class));
+                dialog.dismiss();
+            } else if (radioChinese.isChecked()) {
+                ProjectUtil.updateResources(mContext, "zh");
+                sharedPref.setlanguage("lan", "zh");
+                finish();
+                startActivity(new Intent(mContext, LoginAct.class));
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+
+    }
+
+    @SuppressLint("MissingPermission")
+    protected void startLocationUpdates() {
+
+        // Create the location request to start receiving updates
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(UPDATE_INTERVAL);
+        mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
+
+        // Create LocationSettingsRequest object using location request
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
+        builder.addLocationRequest(mLocationRequest);
+        LocationSettingsRequest locationSettingsRequest = builder.build();
+
+        SettingsClient settingsClient = LocationServices.getSettingsClient(LoginAct.this);
+        settingsClient.checkLocationSettings(locationSettingsRequest);
+
+        // new Google API SDK v11 uses getFusedLocationProviderClient(this)
+        if (ActivityCompat.checkSelfPermission(LoginAct.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(LoginAct.this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
+        getFusedLocationProviderClient(LoginAct.this)
+                .requestLocationUpdates(mLocationRequest, new LocationCallback() {
+                    @Override
+                    public void onLocationResult(LocationResult locationResult) {
+                        if (locationResult != null) {
+                            Log.e("hdasfkjhksdf", "StartLocationUpdate = " + locationResult.getLastLocation());
+                            currentLocation = locationResult.getLastLocation();
+                        }
+                    }
+                }, Looper.myLooper());
+
     }
 
     private void itit() {
+
+        binding.changeLang.setOnClickListener(v -> {
+            changeLangDialog();
+        });
 
         binding.cvGoogle.setOnClickListener(v -> {
             ProjectUtil.blinkAnimation(binding.cvGoogle);
@@ -149,7 +283,8 @@ public class LoginAct extends AppCompatActivity {
                 Toast.makeText(mContext, getString(R.string.please_enter_pass), Toast.LENGTH_SHORT).show();
             } else {
                 if (InternetConnection.checkConnection(mContext)) {
-                    loginApiCall();
+                    loginCheck();
+                    // loginApiCall();
                 } else {
                     Toast.makeText(mContext, getString(R.string.check_internet_text), Toast.LENGTH_LONG).show();
                 }
@@ -177,9 +312,11 @@ public class LoginAct extends AppCompatActivity {
                             Log.e("kjsgdfkjdgsf", "email = " + user.getEmail());
                             Log.e("kjsgdfkjdgsf", "Userid = " + user.getUid());
 
-                            socialLoginCall(user.getDisplayName(),
-                                    user.getEmail(), profilePhoto,
-                                    user.getUid());
+                            loginCheckGoogleFB(user, profilePhoto);
+
+//                            socialLoginCall(user.getDisplayName(),
+//                                    user.getEmail(), profilePhoto,
+//                                    user.getUid());
 
                         } else {
                             Toast.makeText(mContext, "Authentication failed.", Toast.LENGTH_SHORT).show();
@@ -187,6 +324,127 @@ public class LoginAct extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    private void loginCheck() {
+        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
+
+        HashMap<String, String> paramHash = new HashMap<>();
+        paramHash.put("email", binding.etEmail.getText().toString().trim());
+        paramHash.put("register_id", registerId);
+
+        Log.e("asdfasdfasf", "paramHash = " + paramHash);
+
+        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+        Call<ResponseBody> call = api.checkLoginValidCall(paramHash);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                ProjectUtil.pauseProgressDialog();
+                try {
+                    String responseString = response.body().string();
+                    JSONObject jsonObject = new JSONObject(responseString);
+
+                    Log.e("responseString", "responseString = " + responseString);
+
+                    if (jsonObject.getString("status").equals("1")) {
+                        loginApiCall();
+                    } else if (jsonObject.getString("status").equals("2")) {
+                        MyApplication.showAlert(mContext, getString(R.string.email_not_exist));
+                    } else {
+                        logoutAlertDialog();
+                    }
+
+                } catch (Exception e) {
+                    // Toast.makeText(mContext, "Exception = " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e("Exception", "Exception = " + e.getMessage());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                ProjectUtil.pauseProgressDialog();
+            }
+
+        });
+    }
+
+    private void loginCheckGoogleFB(FirebaseUser user, String profilePhoto) {
+        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
+
+        HashMap<String, String> paramHash = new HashMap<>();
+        paramHash.put("email", user.getEmail());
+        paramHash.put("register_id", registerId);
+
+        Log.e("asdfasdfasf", "paramHash = " + paramHash);
+
+        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+        Call<ResponseBody> call = api.checkLoginValidCall(paramHash);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                ProjectUtil.pauseProgressDialog();
+                try {
+                    String responseString = response.body().string();
+                    JSONObject jsonObject = new JSONObject(responseString);
+
+                    Log.e("responseString", "responseString = " + responseString);
+
+                    if (jsonObject.getString("status").equals("1")) {
+                        socialLoginCall(user.getDisplayName(),
+                                user.getEmail(), profilePhoto,
+                                user.getUid());
+                    } else if (jsonObject.getString("status").equals("2")) {
+                        socialLoginCall(user.getDisplayName(),
+                                user.getEmail(), profilePhoto,
+                                user.getUid());
+                    } else {
+                        logoutAlertDialogGoogleFB(user, profilePhoto);
+                    }
+                } catch (Exception e) {
+                    // Toast.makeText(mContext, "Exception = " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e("Exception", "Exception = " + e.getMessage());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                ProjectUtil.pauseProgressDialog();
+            }
+
+        });
+    }
+
+    private void logoutAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setMessage("You are logged in with another device do you want to login with these device?")
+                .setCancelable(false)
+                .setPositiveButton(mContext.getString(R.string.ok)
+                        , new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                loginApiCall();
+                                dialog.dismiss();
+                            }
+                        }).create().show();
+    }
+
+    private void logoutAlertDialogGoogleFB(FirebaseUser user, String profilePhoto) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setMessage("You are logged in with another device do you want to login with these device?")
+                .setCancelable(false)
+                .setPositiveButton(mContext.getString(R.string.ok)
+                        , new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                socialLoginCall(user.getDisplayName(),
+                                        user.getEmail(), profilePhoto,
+                                        user.getUid());
+                                dialog.dismiss();
+                            }
+                        }).create().show();
     }
 
     private void socialLoginCall(String username, String email, String image, String socialId) {
@@ -293,9 +551,11 @@ public class LoginAct extends AppCompatActivity {
                                 Log.e("kjsgdfkjdgsf", "email = " + user.getEmail());
                                 Log.e("kjsgdfkjdgsf", "Userid = " + user.getUid());
 
-                                socialLoginCall(user.getDisplayName(),
-                                        user.getEmail(), String.valueOf(user.getPhotoUrl()),
-                                        user.getUid());
+                                loginCheckGoogleFB(user, String.valueOf(user.getPhotoUrl()));
+
+//                                socialLoginCall(user.getDisplayName(),
+//                                        user.getEmail(), String.valueOf(user.getPhotoUrl()),
+//                                        user.getUid());
 
                             }
 

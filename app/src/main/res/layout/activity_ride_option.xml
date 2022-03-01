@@ -76,7 +76,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="match_parent"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -84,7 +84,6 @@
                             android:text="@string/estimated_trip_time"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_12sdp"
-                            android:layout_marginTop="@dimen/_5sdp"
                             android:layout_marginStart="@dimen/_15sdp"
                             android:fontFamily="@font/poppins_regular" />
 
@@ -96,72 +95,105 @@
                             android:textColor="@color/black"
                             android:textSize="@dimen/_12sdp"
                             android:layout_marginStart="@dimen/_15sdp"
-                            android:fontFamily="@font/poppins_regular" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.6"
-                        android:visibility="gone"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_11sdp"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:fontFamily="@font/poppins_regular" />
-
-                        <RadioGroup
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:weightSum="1"
-                            android:orientation="horizontal"
-                            android:gravity="center">
-
-                            <RadioButton
-                                android:id="@+id/rbCash"
-                                android:layout_width="0dp"
-                                android:layout_weight="0.5"
-                                android:includeFontPadding="false"
-                                android:textSize="@dimen/_12sdp"
-                                android:layout_height="wrap_content"
-                                android:textStyle="bold"
-                                android:text="Cash Pay"/>
-
-                            <RadioButton
-                                android:id="@+id/rbCard"
-                                android:layout_width="0dp"
-                                android:includeFontPadding="false"
-                                android:layout_weight="0.5"
-                                android:textSize="@dimen/_12sdp"
-                                android:layout_height="wrap_content"
-                                android:textStyle="bold"
-                                android:text="Card Pay"/>
-
-                        </RadioGroup>
+                            android:fontFamily="@font/poppins_medium" />
 
                     </LinearLayout>
 
                 </LinearLayout>
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btnBook"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/select_payment_type"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13sdp"
+                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:fontFamily="@font/poppins_medium" />
+
+                    <RadioGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="3"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <RadioButton
+                            android:id="@+id/rbCash"
+                            android:layout_width="0dp"
+                            android:includeFontPadding="false"
+                            android:layout_weight="1"
+                            android:textSize="@dimen/_12sdp"
+                            android:layout_height="match_parent"
+                            android:textStyle="bold"
+                            android:text="@string/cash_pay"/>
+
+                        <RadioButton
+                            android:id="@+id/rbWallet"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:includeFontPadding="false"
+                            android:textSize="@dimen/_12sdp"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:text="@string/wallet_pay"/>
+
+                        <RadioButton
+                            android:id="@+id/rbCard"
+                            android:layout_width="0dp"
+                            android:includeFontPadding="false"
+                            android:layout_weight="1"
+                            android:textSize="@dimen/_12sdp"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:text="@string/car_pay"/>
+
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:background="@color/yellow"
-                    android:fontFamily="@font/poppins_medium"
-                    android:padding="@dimen/_10sdp"
-                    android:text="@string/book_ride"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_16sdp" />
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnBook"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:background="@color/yellow"
+                        android:fontFamily="@font/poppins_medium"
+                        android:padding="@dimen/_10sdp"
+                        android:text="@string/book_ride"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_16sdp" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnScheduleRide"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:layout_height="wrap_content"
+                        android:background="@color/purple_700"
+                        android:fontFamily="@font/poppins_medium"
+                        android:padding="@dimen/_10sdp"
+                        android:text="@string/schedule_ride"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_16sdp" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
             </LinearLayout>
 

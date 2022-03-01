@@ -268,7 +268,8 @@ public class VerifyAct extends AppCompatActivity {
                             ProjectUtil.pauseProgressDialog();
                             Toast.makeText(mContext, "Failed", Toast.LENGTH_SHORT).show();
 
-                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {}
+                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                            }
 
                         }
                     }
@@ -292,6 +293,9 @@ public class VerifyAct extends AppCompatActivity {
         RequestBody lon = RequestBody.create(MediaType.parse("text/plain"), paramHash.get("lon"));
         RequestBody password = RequestBody.create(MediaType.parse("text/plain"), paramHash.get("password"));
         RequestBody type = RequestBody.create(MediaType.parse("text/plain"), paramHash.get("type"));
+        RequestBody workplace = RequestBody.create(MediaType.parse("text/plain"), paramHash.get("workplace"));
+        RequestBody workLat = RequestBody.create(MediaType.parse("text/plain"), paramHash.get("work_lat"));
+        RequestBody workLon = RequestBody.create(MediaType.parse("text/plain"), paramHash.get("work_lon"));
         RequestBody step = RequestBody.create(MediaType.parse("text/plain"), "1");
         RequestBody userName = RequestBody.create(MediaType.parse("text/plain"), paramHash.get("first_name") + " " + paramHash.get("last_name"));
 
@@ -302,7 +306,7 @@ public class VerifyAct extends AppCompatActivity {
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
         Call<ResponseBody> call = api.signUpDriverCallApi(first_name,
                 last_name, email, mobile, city, address, register_id, lat,
-                lon, password, type, step, userName, profileFilePart);
+                lon, password, type, step, userName, workplace, workLat, workLon, profileFilePart);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

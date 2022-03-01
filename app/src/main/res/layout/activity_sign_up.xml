@@ -43,6 +43,14 @@
                         android:textSize="@dimen/_25sdp"
                         android:textStyle="bold" />
 
+                    <ImageView
+                        android:id="@+id/ivChangeLanguage"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/translate_icon" />
+
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -89,8 +97,9 @@
                         android:backgroundTint="@color/white"
                         android:hint="@string/first_name"
                         app:boxStrokeWidth="0dp"
+                        android:textColorHint="@color/black"
                         app:boxStrokeWidthFocused="0dp"
-                        app:hintTextColor="@color/gray">
+                        app:hintTextColor="@color/black">
 
                         <EditText
                             android:id="@+id/etFirstName"
@@ -120,8 +129,9 @@
                         android:backgroundTint="@color/white"
                         android:hint="@string/last_name"
                         app:boxStrokeWidth="0dp"
+                        android:textColorHint="@color/black"
                         app:boxStrokeWidthFocused="0dp"
-                        app:hintTextColor="@color/gray">
+                        app:hintTextColor="@color/black">
 
                         <EditText
                             android:id="@+id/etLastName"
@@ -157,9 +167,10 @@
                             android:background="@null"
                             android:backgroundTint="@color/white"
                             android:hint="@string/email"
+                            android:textColorHint="@color/black"
                             app:boxStrokeWidth="0dp"
                             app:boxStrokeWidthFocused="0dp"
-                            app:hintTextColor="@color/gray">
+                            app:hintTextColor="@color/black">
 
                             <EditText
                                 android:id="@+id/etEmail"
@@ -200,7 +211,8 @@
                             android:hint="@string/phone_number"
                             app:boxStrokeWidth="0dp"
                             app:boxStrokeWidthFocused="0dp"
-                            app:hintTextColor="@color/gray"
+                            android:textColorHint="@color/black"
+                            app:hintTextColor="@color/black"
                             app:prefixText="+61">
 
                             <EditText
@@ -262,6 +274,33 @@
                         android:fontFamily="@font/poppins_medium"
                         android:hint="@string/home_add"
                         android:imeOptions="actionNext"
+                        android:includeFontPadding="false"
+                        android:inputType="textVisiblePassword|textMultiLine"
+                        android:padding="@dimen/_12sdp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:background="@color/white">
+
+                    <EditText
+                        android:id="@+id/etWorkAdd"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/white"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:fontFamily="@font/poppins_medium"
+                        android:hint="@string/work_address"
+                        android:imeOptions="actionNext"
+                        android:includeFontPadding="false"
                         android:inputType="textVisiblePassword|textMultiLine"
                         android:padding="@dimen/_12sdp"
                         android:textColor="@color/black"
@@ -282,9 +321,10 @@
                         android:background="@null"
                         android:backgroundTint="@color/white"
                         android:hint="@string/password"
+                        android:textColorHint="@color/black"
                         app:boxStrokeWidth="0dp"
                         app:boxStrokeWidthFocused="0dp"
-                        app:hintTextColor="@color/gray">
+                        app:hintTextColor="@color/black">
 
                         <EditText
                             android:id="@+id/etPassword"
@@ -318,8 +358,8 @@
                         android:layout_height="match_parent"
                         android:layout_centerInParent="true"
                         android:fontFamily="@font/poppins_regular"
-                        android:text="@string/term_text"
                         android:gravity="center"
+                        android:text="@string/term_text"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12sdp"
                         android:textStyle="bold" />
