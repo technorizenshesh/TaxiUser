@@ -21,7 +21,7 @@
         android:textColor="@color/black"
         android:padding="@dimen/_5sdp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_10sdp"
         android:textSize="@dimen/_11sdp" />
 
 </LinearLayout>

@@ -10,6 +10,7 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
+        android:background="@color/white"
         android:layout_height="match_parent"
         android:fillViewport="true">
 
@@ -59,14 +60,14 @@
                         android:id="@+id/profileImage"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginRight="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
                         android:src="@drawable/gray_cirle" />
 
                     <ImageView
                         android:id="@+id/addIcon"
                         android:layout_width="@dimen/_40sdp"
                         android:layout_height="@dimen/_40sdp"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:src="@drawable/add_icon" />
 
                 </RelativeLayout>
@@ -93,6 +94,7 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:backgroundTint="@color/white"
+                        android:textColorHint="@color/black"
                         android:hint="@string/first_name"
                         app:boxStrokeWidth="0dp"
                         app:boxStrokeWidthFocused="0dp"
@@ -126,6 +128,7 @@
                         android:background="@null"
                         android:backgroundTint="@color/white"
                         android:hint="@string/last_name"
+                        android:textColorHint="@color/black"
                         app:boxStrokeWidth="0dp"
                         app:boxStrokeWidthFocused="0dp"
                         app:hintTextColor="@color/gray">
@@ -165,6 +168,7 @@
                             android:background="@null"
                             android:backgroundTint="@color/white"
                             android:hint="@string/email"
+                            android:textColorHint="@color/black"
                             app:boxStrokeWidth="0dp"
                             app:boxStrokeWidthFocused="0dp"
                             app:hintTextColor="@color/gray">
@@ -211,6 +215,7 @@
                             android:backgroundTint="@color/white"
                             android:hint="@string/phone_number"
                             app:boxStrokeWidth="0dp"
+                            android:textColorHint="@color/black"
                             app:boxStrokeWidthFocused="0dp"
                             app:hintTextColor="@color/gray"
                             app:prefixText="+61">
@@ -245,6 +250,7 @@
                         android:background="@null"
                         android:backgroundTint="@color/white"
                         android:hint="@string/city_name"
+                        android:textColorHint="@color/black"
                         app:boxStrokeWidth="0dp"
                         app:boxStrokeWidthFocused="0dp"
                         app:hintTextColor="@color/gray">

@@ -80,6 +80,10 @@ public interface Api {
     Call<ResponseBody> checkLoginValidCall(@FieldMap Map<String, String> params);
 
     @FormUrlEncoded
+    @POST("check_credential")
+    Call<ResponseBody> checkCredentialsApi(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
     @POST("get_schedule_booking_count")
     Call<ResponseBody> getScheduleBookingCount(@FieldMap Map<String, String> params);
 
@@ -172,8 +176,16 @@ public interface Api {
     Call<ResponseBody> getProfileCall(@FieldMap Map<String, String> params);
 
     @FormUrlEncoded
+    @POST("update_currency_parm")
+    Call<ResponseBody> updateCurrencyApiCall(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
     @POST("login")
     Call<ResponseBody> loginApiCall(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @POST("update_business_email")
+    Call<ResponseBody> businessEmailUpdateApi(@FieldMap Map<String, String> params);
 
     @FormUrlEncoded
     @POST("available_car_driver")

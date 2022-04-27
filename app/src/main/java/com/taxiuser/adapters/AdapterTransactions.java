@@ -46,7 +46,8 @@ public class AdapterTransactions extends RecyclerView.Adapter<AdapterTransaction
         ModelTransactions.Result data = plansList.get(position);
 
         holder.binding.tvDate.setText(data.getDate_time().split(" ")[0].trim());
-        holder.binding.tvAmount.setText(AppConstant.CURRENCY + " " + data.getAmount());
+        double amount = Double.parseDouble(data.getAmount()) * AppConstant.CURRENT_CURRENCY_VALUE;
+        holder.binding.tvAmount.setText(AppConstant.CURRENCY + " " + String.format("%.2f", amount));
 
         if ("Credit".equals(data.getTransaction_type())) {
             holder.binding.tvDebitCredit.setText("Credit");

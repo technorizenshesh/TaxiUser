@@ -39,6 +39,7 @@ import com.taxiuser.utils.retrofitutils.ApiFactory;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.TimeZone;
 
@@ -96,6 +97,11 @@ public class EndUserAct extends AppCompatActivity {
             Log.e("zddsasdfdasf", "payType = " + payType);
             Log.e("zddsasdfdasf", "payType = " + payType);
 
+            Log.e("zddsasdfdasf", "payType = " + AppConstant.CURRENT_CURRENCY_VALUE);
+            Log.e("zddsasdfdasf", "Double.parseDouble(result.getAmount()) * AppConstant.CURRENT_CURRENCY_VALUE = " + (Double.parseDouble(result.getAmount()) * AppConstant.CURRENT_CURRENCY_VALUE));
+            Log.e("zddsasdfdasf", "Double.parseDouble(result.getAmount()) bracket mai = " + ((Double.parseDouble(result.getAmount())) * AppConstant.CURRENT_CURRENCY_VALUE));
+            Log.e("zddsasdfdasf", "payType = " + AppConstant.CURRENCY);
+
             driverId = result.getDriverId();
             driverDetails = result.getDriver_details().get(0);
 
@@ -110,36 +116,42 @@ public class EndUserAct extends AppCompatActivity {
 
             try {
                 serviceTax = Double.parseDouble(result.getService_tax());
+                serviceTax = Double.parseDouble(String.format("%.2f",serviceTax));
             } catch (Exception e) {
                 serviceTax = 0.0;
             }
 
             try {
-                distanceCost = Double.parseDouble(result.getAmount());
+                distanceCost = Double.parseDouble(result.getAmount()) * AppConstant.CURRENT_CURRENCY_VALUE;
+                distanceCost = Double.parseDouble(String.format("%.2f",distanceCost));
             } catch (Exception e) {
                 distanceCost = 0.0;
             }
 
             try {
-                tollCost = Double.parseDouble(result.getToll_charge());
+                tollCost = Double.parseDouble(result.getToll_charge()) * AppConstant.CURRENT_CURRENCY_VALUE;
+                tollCost = Double.parseDouble(String.format("%.2f",tollCost));
             } catch (Exception e) {
                 tollCost = 0.0;
             }
 
             try {
-                otherCost = Double.parseDouble(result.getOther_charge());
+                otherCost = Double.parseDouble(result.getOther_charge()) * AppConstant.CURRENT_CURRENCY_VALUE;
+                otherCost = Double.parseDouble(String.format("%.2f",otherCost));
             } catch (Exception e) {
                 otherCost = 0.0;
             }
 
             try {
-                waitingCost = Double.parseDouble(result.getWaiting_time_amount());
+                waitingCost = Double.parseDouble(result.getWaiting_time_amount()) * AppConstant.CURRENT_CURRENCY_VALUE;
+                waitingCost = Double.parseDouble(String.format("%.2f",waitingCost));
             } catch (Exception e) {
                 waitingCost = 0.0;
             }
 
             try {
-                serviceCost = (distanceCost * Integer.parseInt(result.getService_tax())) / 100.0;
+                serviceCost = ((distanceCost * Integer.parseInt(result.getService_tax())) / 100.0) * AppConstant.CURRENT_CURRENCY_VALUE;
+                serviceCost = Double.parseDouble(String.format("%.2f",serviceCost));
             } catch (Exception e) {
                 serviceCost = 0.0;
             }
@@ -159,14 +171,14 @@ public class EndUserAct extends AppCompatActivity {
 
             binding.tvFrom.setText(pickUp);
             binding.tvDestination.setText(dropOff);
-            binding.tvServiceTax.setText(getString(R.string.tax) + result.getService_tax() + "%");
-            binding.tvTaxAmount.setText(AppConstant.CURRENCY + serviceCost);
-            binding.tvDistanceCost.setText(AppConstant.CURRENCY + result.getAmount());
+            binding.tvServiceTax.setText(getString(R.string.tax) + serviceTax + "%");
+            binding.tvTaxAmount.setText(AppConstant.CURRENCY + " " + serviceCost);
+            binding.tvDistanceCost.setText(AppConstant.CURRENCY + " " + distanceCost);
             binding.tvDistance.setText(result.getDistance() + " Km");
-            binding.tvTollCharge.setText(AppConstant.CURRENCY + result.getToll_charge());
-            binding.tvOtherCharge.setText(AppConstant.CURRENCY + result.getOther_charge());
-            binding.tvWaitingCharge.setText(AppConstant.CURRENCY + result.getWaiting_time_amount());
-            binding.tvTotalPay.setText(String.valueOf(totalCostFinal));
+            binding.tvTollCharge.setText(AppConstant.CURRENCY + " " + tollCost);
+            binding.tvOtherCharge.setText(AppConstant.CURRENCY + " " + otherCost);
+            binding.tvWaitingCharge.setText(AppConstant.CURRENCY + " " + waitingCost);
+            binding.tvTotalPay.setText(String.format("%.2f", totalCostFinal));
             binding.tvPayType.setText(result.getPaymentType().toUpperCase());
 
         }
@@ -179,8 +191,8 @@ public class EndUserAct extends AppCompatActivity {
                 } else {
 
                     try {
-                        Log.e("dfasdasdas", "Exception = " +  modelLogin.getResult().getExpiry_year());
-                        Log.e("dfasdasdas", "Exception = " +  Integer.valueOf(modelLogin.getResult().getExpiry_year().substring(2)));
+                        Log.e("dfasdasdas", "Exception = " + modelLogin.getResult().getExpiry_year());
+                        Log.e("dfasdasdas", "Exception = " + Integer.valueOf(modelLogin.getResult().getExpiry_year().substring(2)));
                     } catch (Exception e) {
                         Log.e("dfasdasdas", "Exception = " + e.getMessage());
                     }

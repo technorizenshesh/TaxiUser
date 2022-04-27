@@ -77,16 +77,26 @@ public class UpdateProfileAct extends AppCompatActivity {
 
         binding.setData(modelLogin.getResult());
 
-        if (modelLogin.getResult().getFirst_name() == null ||
-                modelLogin.getResult().getFirst_name().equals("")) {
+        if (modelLogin.getResult().getUser_name() == null ||
+                modelLogin.getResult().getUser_name().equals("")) {
+            binding.etFirstName.setText(modelLogin.getResult().getFirst_name());
+            binding.etLastName.setText(modelLogin.getResult().getLast_name());
+        } else {
             try {
                 binding.etFirstName.setText(modelLogin.getResult().getUser_name().split(" ")[0]);
                 binding.etLastName.setText(modelLogin.getResult().getUser_name().split(" ")[1]);
             } catch (Exception e){}
-        } else {
-            binding.etFirstName.setText(modelLogin.getResult().getFirst_name());
-            binding.etLastName.setText(modelLogin.getResult().getLast_name());
         }
+
+//        if (modelLogin.getResult().getFirst_name() == null ||
+//                modelLogin.getResult().getFirst_name().equals("")) {
+//            try {
+//                binding.etFirstName.setText(modelLogin.getResult().getUser_name().split(" ")[0]);
+//            } catch (Exception e){}
+//        } else {
+//            binding.etFirstName.setText(modelLogin.getResult().getFirst_name());
+//            binding.etLastName.setText(modelLogin.getResult().getLast_name());
+//        }
 
         try {
             latLng = new LatLng(Double.parseDouble(modelLogin.getResult().getLat())
@@ -214,12 +224,10 @@ public class UpdateProfileAct extends AppCompatActivity {
                     Log.e("updateDriverCallApi", "responseString = " + responseString);
 
                     if (jsonObject.getString("status").equals("1")) {
-
                         modelLogin = new Gson().fromJson(responseString, ModelLogin.class);
                         sharedPref.setBooleanValue(AppConstant.IS_REGISTER, true);
                         sharedPref.setUserDetails(AppConstant.USER_DETAILS, modelLogin);
                         finish();
-
                     }
 
                 } catch (Exception e) {

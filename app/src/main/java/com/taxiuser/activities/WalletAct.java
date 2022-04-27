@@ -18,6 +18,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.gson.Gson;
 import com.stripe.android.ApiResultCallback;
 import com.stripe.android.Stripe;
@@ -52,9 +55,11 @@ public class WalletAct extends AppCompatActivity {
 
     Context mContext = WalletAct.this;
     ActivityWalletBinding binding;
+    private double walletTmpAmt;
     SharedPref sharedPref;
     ModelLogin modelLogin;
-    private double walletTmpAmt = 0.0;
+    double walletAmountWithCurrencyChange = 0.0;
+    SendMoneyDialogBinding dialogBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,15 +68,12 @@ public class WalletAct extends AppCompatActivity {
         sharedPref = SharedPref.getInstance(mContext);
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
         itit();
+        getNewProfile2();
     }
 
     private void itit() {
 
         getAllTransactionsApi();
-
-        binding.ivBack.setOnClickListener(v -> {
-            finish();
-        });
 
         binding.swipLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -90,21 +92,132 @@ public class WalletAct extends AppCompatActivity {
 
     }
 
+    private void getAllTransactionsApi() {
+
+        HashMap<String, String> paramHash = new HashMap<>();
+        paramHash.put("user_id", modelLogin.getResult().getId());
+
+        Log.e("paramHashparamHash", "paramHash = " + paramHash);
+
+        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+        Call<ResponseBody> call = api.getTransactionApiCall(paramHash);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                ProjectUtil.pauseProgressDialog();
+                binding.swipLayout.setRefreshing(false);
+                try {
+
+                    String stringResponse = response.body().string();
+
+                    try {
+
+                        JSONObject jsonObject = new JSONObject(stringResponse);
+
+                        Log.e("sendMoneyAPiCall", "sendMoneyAPiCall = " + stringResponse);
+
+                        if (jsonObject.getString("status").equals("1")) {
+                            Log.e("sendMoneyAPiCall", "sendMoneyAPiCall = " + stringResponse);
+                            ModelTransactions modelTransactions = new Gson().fromJson(stringResponse, ModelTransactions.class);
+                            AdapterTransactions adapterTransactions = new AdapterTransactions(mContext, modelTransactions.getResult());
+                            binding.rvTransaction.setAdapter(adapterTransactions);
+                        } else {
+                            AdapterTransactions adapterTransactions = new AdapterTransactions(mContext, null);
+                            binding.rvTransaction.setAdapter(adapterTransactions);
+                            Toast.makeText(mContext, jsonObject.getString("result"), Toast.LENGTH_SHORT).show();
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("JSONException", "JSONException = " + e.getMessage());
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                ProjectUtil.pauseProgressDialog();
+                binding.swipLayout.setRefreshing(false);
+            }
+
+        });
+
+    }
+
+    private void sendMoneyAPiCall(Dialog dialog, String email, String amount, String type) {
+
+        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
+
+        HashMap<String, String> paramHash = new HashMap<>();
+        paramHash.put("user_id", modelLogin.getResult().getId());
+        paramHash.put("amount", amount);
+        paramHash.put("email", email);
+        paramHash.put("type", type);
+
+        Log.e("paramHashparamHash", "paramHash = " + paramHash);
+
+        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+        Call<ResponseBody> call = api.walletTransferApiCall(paramHash);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                ProjectUtil.pauseProgressDialog();
+                try {
+
+                    String stringResponse = response.body().string();
+
+                    try {
+
+                        JSONObject jsonObject = new JSONObject(stringResponse);
+
+                        Log.e("sendMoneyAPiCall", "sendMoneyAPiCall = " + stringResponse);
+
+                        if (jsonObject.getString("status").equals("1")) {
+                            Log.e("sendMoneyAPiCall", "sendMoneyAPiCall = " + stringResponse);
+                            getAllTransactionsApi();
+                            getProfileApiCall();
+                            dialog.dismiss();
+                        } else {
+                            MyApplication.showAlert(mContext, jsonObject.getString("result"));
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("JSONException", "JSONException = " + e.getMessage());
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                ProjectUtil.pauseProgressDialog();
+            }
+
+        });
+
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-        sharedPref = SharedPref.getInstance(mContext);
-        modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
         getProfileApiCall();
     }
 
-    private void addWalletAmountApi(String amount, Dialog dialog, String token, String currency) {
+    private void addWalletAmountApi(String amount, Dialog dialog, String token) {
 
         HashMap<String, String> map = new HashMap<>();
         map.put("user_id", modelLogin.getResult().getId());
         map.put("amount", amount);
         map.put("token", token);
-        map.put("currency", currency);
+        map.put("currency", "AUD");
 
         Log.e("AcceptCancel", "AcceptCancel = " + map);
 
@@ -123,6 +236,7 @@ public class WalletAct extends AppCompatActivity {
                     JSONObject jsonObject = new JSONObject(stringResponse);
                     if (jsonObject.getString("status").equals("1")) {
                         dialog.dismiss();
+                        getAllTransactionsApi();
                         getProfileApiCall();
                     }
                 } catch (Exception e) {
@@ -164,9 +278,68 @@ public class WalletAct extends AppCompatActivity {
                             Log.e("getProfileApiCall", "getProfileApiCall = " + stringResponse);
 
                             modelLogin = new Gson().fromJson(stringResponse, ModelLogin.class);
+
+                            double amount = Double.parseDouble(modelLogin.getResult().getWallet()) * AppConstant.CURRENT_CURRENCY_VALUE;
+                            binding.tvWalletAmount.setText(AppConstant.CURRENCY + " " + String.format("%.2f", amount));
+
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("JSONException", "JSONException = " + e.getMessage());
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                ProjectUtil.pauseProgressDialog();
+            }
+
+        });
+
+    }
+
+    private void getNewProfile2() {
+
+        ProjectUtil.showProgressDialog(mContext,false,getString(R.string.please_wait));
+
+        HashMap<String, String> paramHash = new HashMap<>();
+        paramHash.put("user_id", modelLogin.getResult().getId());
+
+        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+        Call<ResponseBody> call = api.getProfileCall(paramHash);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                ProjectUtil.pauseProgressDialog();
+                try {
+
+                    String stringResponse = response.body().string();
+
+                    try {
+
+                        JSONObject jsonObject = new JSONObject(stringResponse);
+
+                        if (jsonObject.getString("status").equals("1")) {
+
+                            Log.e("getProfileApiCall", "getProfileApiCall = " + stringResponse);
+
+                            Log.e("getProfileApiCall", "modelLogin.getResult().getWallet() = " + modelLogin.getResult().getWallet());
+                            Log.e("getProfileApiCall", "AppConstant.CURRENT_CURRENCY_VALUE = " + AppConstant.CURRENT_CURRENCY_VALUE);
+
+                            modelLogin = new Gson().fromJson(stringResponse, ModelLogin.class);
                             sharedPref.setUserDetails(AppConstant.USER_DETAILS, modelLogin);
 
-                            binding.tvWalletAmount.setText(AppConstant.CURRENCY + " " + modelLogin.getResult().getWallet());
+                            try {
+                                double walletAmt = Double.parseDouble(modelLogin.getResult().getWallet()) * AppConstant.CURRENT_CURRENCY_VALUE;
+                                binding.tvWalletAmount.setText(AppConstant.CURRENCY + " " + String.format("%.2f",walletAmt));
+                            } catch (Exception e) {
+                            }
 
                         }
 
@@ -249,18 +422,11 @@ public class WalletAct extends AppCompatActivity {
         });
 
         dialogBinding.btDone.setOnClickListener(v -> {
-            Log.e("asdasggggdasd", "Ayyaaa");
             walletTmpAmt = Double.parseDouble(dialogBinding.etMoney.getText().toString().trim());
-
-            if (modelLogin.getResult().getCard_number() == null ||
-                    modelLogin.getResult().getCard_number().equals("")) {
-                startActivity(new Intent(mContext, CardDetailsAct.class));
-            }
-
             if (TextUtils.isEmpty(dialogBinding.etMoney.getText().toString().trim())) {
-                Toast.makeText(mContext, "Please enter amount", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, getString(R.string.please_enter_amount), Toast.LENGTH_SHORT).show();
             } else if (walletTmpAmt == 0.0) {
-                Toast.makeText(mContext, "Please enter valid amount", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, getString(R.string.enter_valid_amount), Toast.LENGTH_SHORT).show();
             } else {
                 if (modelLogin.getResult().getCard_number() == null ||
                         modelLogin.getResult().getCard_number().equals("")) {
@@ -280,7 +446,9 @@ public class WalletAct extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Token token) {
                                     ProjectUtil.pauseProgressDialog();
-                                    addWalletAmountApi(String.valueOf(walletTmpAmt), dialog, token.getId(), "AUD");
+                                    walletAmountWithCurrencyChange = walletTmpAmt;
+                                    changeToAUD(AppConstant.CURRENCY, dialog, token.getId());
+                                    // addWalletAmountApi(String.valueOf(walletTmpAmt), dialog, token.getId());
                                     Log.e("asfadasdasd", "tokentokentoken = " + token.getId());
                                 }
 
@@ -306,12 +474,56 @@ public class WalletAct extends AppCompatActivity {
 
     }
 
+    private void changeToAUD(String base, Dialog dialog, String token) {
+        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
+
+        Log.e("changeToAUD", "URL = " + "https://api.exchangeratesapi.io/v1/latest?access_key="
+                + AppConstant.CURRENCY_KEY + "&base=" + base + "&symbols=AUD");
+
+        AndroidNetworking.get("https://api.exchangeratesapi.io/v1/latest?access_key="
+                + AppConstant.CURRENCY_KEY + "&base=" + base + "&symbols=AUD")
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        ProjectUtil.pauseProgressDialog();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONObject rates = jsonObject.getJSONObject("rates");
+                            double currencyAmount = rates.getDouble("AUD");
+
+                            walletAmountWithCurrencyChange = walletAmountWithCurrencyChange * currencyAmount;
+
+                            if (AppConstant.CURRENCY.equals("PKR")) {
+                                if (walletTmpAmt < 100.0) {
+                                    MyApplication.showAlert(mContext, getString(R.string.need_to_add_100_pkr));
+                                } else {
+                                    addWalletAmountApi(String.format("%.2f", walletAmountWithCurrencyChange), dialog, token);
+                                }
+                            } else {
+                                addWalletAmountApi(String.format("%.2f", walletAmountWithCurrencyChange), dialog, token);
+                            }
+
+                            Log.e("changeToAUD", "currencyAmount = " + currencyAmount);
+                            Log.e("changeToAUD", "currencyAmountRoundOFF = " + String.format("%.2f", walletAmountWithCurrencyChange));
+                            Log.e("changeToAUD", "walletAmountWithCurrencyChange = " + walletAmountWithCurrencyChange);
+                        } catch (Exception e) {
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        ProjectUtil.pauseProgressDialog();
+                    }
+                });
+    }
+
     private void tranferMOneyDialog() {
 
         Dialog dialog = new Dialog(mContext, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        SendMoneyDialogBinding dialogBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext),
+        dialogBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext),
                 R.layout.send_money_dialog, null, false);
 
         dialog.setContentView(dialogBinding.getRoot());
@@ -329,15 +541,10 @@ public class WalletAct extends AppCompatActivity {
             } else if (!ProjectUtil.isValidEmail(dialogBinding.etEmail.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.invalid_email), Toast.LENGTH_SHORT).show();
             } else {
-                if (dialogBinding.rbUser.isChecked()) {
-                    sendMoneyAPiCall(dialog, dialogBinding.etEmail.getText().toString().trim()
-                            , dialogBinding.etEnterAmount.getText().toString().trim(), "USER");
-                } else if (dialogBinding.rbDriver.isChecked()) {
-                    sendMoneyAPiCall(dialog, dialogBinding.etEmail.getText().toString().trim()
-                            , dialogBinding.etEnterAmount.getText().toString().trim(), "DRIVER");
-                } else {
-                    MyApplication.showAlert(mContext, getString(R.string.select_user_driver_text));
-                }
+                walletTmpAmt = Double.parseDouble(dialogBinding.etEnterAmount.getText().toString().trim());
+                walletAmountWithCurrencyChange = walletTmpAmt;
+                changeToAUDTransfer(dialog, dialogBinding.etEmail.getText().toString().trim()
+                        , dialogBinding.etEnterAmount.getText().toString().trim(), "USER", AppConstant.CURRENCY);
             }
 
         });
@@ -355,119 +562,61 @@ public class WalletAct extends AppCompatActivity {
 
     }
 
-    private void getAllTransactionsApi() {
-
-        HashMap<String, String> paramHash = new HashMap<>();
-        paramHash.put("user_id", modelLogin.getResult().getId());
-
-        Log.e("paramHashparamHash", "paramHash = " + paramHash);
-
-        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
-        Call<ResponseBody> call = api.getTransactionApiCall(paramHash);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                ProjectUtil.pauseProgressDialog();
-                binding.swipLayout.setRefreshing(false);
-                try {
-
-                    String stringResponse = response.body().string();
-
-                    try {
-
-                        JSONObject jsonObject = new JSONObject(stringResponse);
-
-                        Log.e("sendMoneyAPiCall", "sendMoneyAPiCall = " + stringResponse);
-
-                        if (jsonObject.getString("status").equals("1")) {
-                            Log.e("sendMoneyAPiCall", "sendMoneyAPiCall = " + stringResponse);
-                            ModelTransactions modelTransactions = new Gson().fromJson(stringResponse, ModelTransactions.class);
-                            AdapterTransactions adapterTransactions = new AdapterTransactions(mContext, modelTransactions.getResult());
-                            binding.rvTransaction.setAdapter(adapterTransactions);
-                        } else {
-                            AdapterTransactions adapterTransactions = new AdapterTransactions(mContext, null);
-                            binding.rvTransaction.setAdapter(adapterTransactions);
-                            // Toast.makeText(mContext, jsonObject.getString("result"), Toast.LENGTH_SHORT).show();
-                        }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Log.e("JSONException", "JSONException = " + e.getMessage());
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                ProjectUtil.pauseProgressDialog();
-                binding.swipLayout.setRefreshing(false);
-            }
-
-        });
-
-    }
-
-    private void sendMoneyAPiCall(Dialog dialog, String email, String amount, String type) {
-
+    private void changeToAUDTransfer(Dialog dialog, String email, String amount, String type, String base) {
         ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
 
-        HashMap<String, String> paramHash = new HashMap<>();
-        paramHash.put("user_id", modelLogin.getResult().getId());
-        paramHash.put("amount", amount);
-        paramHash.put("email", email);
-        paramHash.put("type", type);
+        Log.e("changeToAUD", "URL = " + "https://api.exchangeratesapi.io/v1/latest?access_key="
+                + AppConstant.CURRENCY_KEY + "&base=" + base + "&symbols=AUD");
 
-        Log.e("paramHashparamHash", "paramHash = " + paramHash);
+        AndroidNetworking.get("https://api.exchangeratesapi.io/v1/latest?access_key="
+                + AppConstant.CURRENCY_KEY + "&base=" + base + "&symbols=AUD")
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        ProjectUtil.pauseProgressDialog();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONObject rates = jsonObject.getJSONObject("rates");
+                            double currencyAmount = rates.getDouble("AUD");
 
-        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
-        Call<ResponseBody> call = api.walletTransferApiCall(paramHash);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                ProjectUtil.pauseProgressDialog();
-                try {
+                            walletAmountWithCurrencyChange = walletAmountWithCurrencyChange * currencyAmount;
 
-                    String stringResponse = response.body().string();
+                            if (AppConstant.CURRENCY.equals("PKR")) {
+                                if (walletTmpAmt < 100.0) {
+                                    MyApplication.showAlert(mContext, getString(R.string.need_to_send_100_pkr));
+                                } else {
+                                    if (dialogBinding.rbUser.isChecked()) {
+                                        sendMoneyAPiCall(dialog, email, String.valueOf(walletAmountWithCurrencyChange), "USER");
+                                    } else if (dialogBinding.rbDriver.isChecked()) {
+                                        sendMoneyAPiCall(dialog, email, String.valueOf(walletAmountWithCurrencyChange), "DRIVER");
+                                    } else {
+                                        MyApplication.showAlert(mContext, getString(R.string.select_user_driver_text));
+                                    }
+                                }
+                            } else {
+                                if (dialogBinding.rbUser.isChecked()) {
+                                    sendMoneyAPiCall(dialog, email, dialogBinding.etEnterAmount.getText().toString().trim(), "USER");
+                                } else if (dialogBinding.rbDriver.isChecked()) {
+                                    sendMoneyAPiCall(dialog, dialogBinding.etEmail.getText().toString().trim()
+                                            , dialogBinding.etEnterAmount.getText().toString().trim(), "DRIVER");
+                                } else {
+                                    MyApplication.showAlert(mContext, getString(R.string.select_user_driver_text));
+                                }
+                            }
 
-                    try {
-
-                        JSONObject jsonObject = new JSONObject(stringResponse);
-
-                        Log.e("sendMoneyAPiCall", "sendMoneyAPiCall = " + stringResponse);
-
-                        if (jsonObject.getString("status").equals("1")) {
-
-                            Log.e("sendMoneyAPiCall", "sendMoneyAPiCall = " + stringResponse);
-                            getAllTransactionsApi();
-                            getProfileApiCall();
-                            dialog.dismiss();
-
-                        } else {
-                            Toast.makeText(mContext, jsonObject.getString("result"), Toast.LENGTH_SHORT).show();
+                            Log.e("changeToAUD", "currencyAmount = " + currencyAmount);
+                            Log.e("changeToAUD", "currencyAmountRoundOFF = " + String.format("%.2f", walletAmountWithCurrencyChange));
+                            Log.e("changeToAUD", "walletAmountWithCurrencyChange = " + walletAmountWithCurrencyChange);
+                        } catch (Exception e) {
                         }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Log.e("JSONException", "JSONException = " + e.getMessage());
                     }
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                ProjectUtil.pauseProgressDialog();
-            }
-
-        });
-
+                    @Override
+                    public void onError(ANError anError) {
+                        ProjectUtil.pauseProgressDialog();
+                    }
+                });
     }
 
 }

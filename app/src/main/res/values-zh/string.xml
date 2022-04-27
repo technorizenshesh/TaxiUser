@@ -1,6 +1,8 @@
 <resources>
     <!--          https://asrt.gluege.boerde.de             -->
     <string name="app_name">TaxiUser</string>
+    <!--AIzaSyBcszOHVLH_XNm0BrcCjTxz59LDBak2qBs-->
+    <string name="google_maps_key" translatable="false">AIzaSyBcszOHVLH_XNm0BrcCjTxz59LDBak2qBs</string>
     <string name="api_key" translatable="false">AIzaSyAAjp4wuz5FyteoKH3Yp7Cv8pS1K86fJw0</string>
     <string name="facebook_app_id">644030573631148</string>
     <string name="fb_login_protocol_scheme">FB644030573631148</string>
@@ -12,6 +14,7 @@
     <string name="reset_pass_msg">重置密碼鏈接發送到您的郵件 ID</string>
     <string name="enter_name_text">請輸入你的名字</string>
     <string name="enter_name_firsttext">請輸入您的名字</string>
+    <string name="email_mobile_exit">郵箱或手機號碼已經存在。</string>
     <string name="enter_name_lasttext">請輸入您的姓氏</string>
     <string name="enter_email_text">請輸入您的電子郵件</string>
     <string name="enter_phone_text">請輸入您的電話號碼</string>
@@ -266,5 +269,14 @@
     <string name="change_currency">更改貨幣</string>
     <string name="you_have_no_ride">你沒有主動騎行</string>
     <string name="you_have">你有</string>
+    <string name="enter_valid_amount">請輸入有效金額</string>
+    <string name="enter_business_email_text">請輸入企業郵箱</string>
+    <string name="business_email">企業郵箱</string>
+    <string name="you_can_also_update_your_business_email_here">您也可以在此處更新您的企業電子郵件</string>
+    <string name="please_update_profile_text">預訂前請先更新您的個人資料</string>
+    <string name="need_to_add_100_pkr">您需要在錢包中添加至少 100 PKR</string>
+    <string name="sar_currency_text">您的錢包至少需要添加 5 SAR</string>
+    <string name="aed_currency_text">您需要在錢包中添加至少 5 AED</string>
+    <string name="need_to_send_100_pkr">您需要從您的錢包中發送至少 100 PKR</string>
     <!--          https://asrt.gluege.boerde.de             -->
 </resources>

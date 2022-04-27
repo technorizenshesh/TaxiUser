@@ -5,6 +5,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
+        android:background="@color/white"
         android:layout_height="match_parent"
         android:fillViewport="true">
 
@@ -23,7 +24,7 @@
                     android:layout_height="@dimen/_30sdp"
                     android:layout_centerVertical="true"
                     android:visibility="gone"
-                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
                     android:src="@drawable/ic_back_black" />
 
                 <TextView
@@ -153,9 +154,9 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_38sdp"
-                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
                     android:background="@drawable/border_gray"
                     android:padding="@dimen/_10sdp">
 

@@ -44,7 +44,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:fontFamily="@font/poppins_medium"
                 android:text="@string/select_payment"
@@ -69,8 +69,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_toRightOf="@id/ivCard"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_toEndOf="@id/ivCard"
                     android:fontFamily="@font/poppins_medium"
                     android:text="@string/card_payment"
                     android:textColor="@color/black"
@@ -79,7 +79,7 @@
                 <ImageView
                     android:layout_width="@dimen/_18sdp"
                     android:layout_height="@dimen/_18sdp"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:src="@drawable/right_arrow" />
 
@@ -102,8 +102,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_toRightOf="@id/ivCard1"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_toEndOf="@id/ivCard1"
                     android:fontFamily="@font/poppins_medium"
                     android:text="@string/wallet"
                     android:textColor="@color/black"
@@ -112,7 +112,7 @@
                 <ImageView
                     android:layout_width="@dimen/_18sdp"
                     android:layout_height="@dimen/_18sdp"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:src="@drawable/right_arrow" />
 
@@ -135,8 +135,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_toRightOf="@id/ivCard2"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_toEndOf="@id/ivCard2"
                     android:fontFamily="@font/poppins_medium"
                     android:text="@string/cash"
                     android:textColor="@color/black"
@@ -145,7 +145,7 @@
                 <ImageView
                     android:layout_width="@dimen/_18sdp"
                     android:layout_height="@dimen/_18sdp"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:src="@drawable/right_arrow" />
 

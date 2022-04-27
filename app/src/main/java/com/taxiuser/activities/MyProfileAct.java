@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -21,6 +22,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.StringRequestListener;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
@@ -29,6 +33,10 @@ import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
+import com.stripe.android.ApiResultCallback;
+import com.stripe.android.Stripe;
+import com.stripe.android.model.Card;
+import com.stripe.android.model.Token;
 import com.taxiuser.R;
 import com.taxiuser.databinding.ActivityMyProfileBinding;
 import com.taxiuser.databinding.AddMoneyDialogBinding;
@@ -44,6 +52,7 @@ import com.taxiuser.utils.SharedPref;
 import com.taxiuser.utils.retrofitutils.Api;
 import com.taxiuser.utils.retrofitutils.ApiFactory;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -67,11 +76,14 @@ public class MyProfileAct extends AppCompatActivity {
     private LatLng homeLatLng, workLatlong;
     private static final int AUTOCOMPLETE_REQUEST_CODE = 101;
     private static final int AUTOCOMPLETE_WORK_CODE = 103;
+    private double walletAmountWithCurrencyChange = 0.0;
+    SendMoneyDialogBinding dialogBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_my_profile);
+
         sharedPref = SharedPref.getInstance(mContext);
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
 
@@ -91,6 +103,7 @@ public class MyProfileAct extends AppCompatActivity {
         });
 
         itit();
+
     }
 
     @Override
@@ -131,6 +144,10 @@ public class MyProfileAct extends AppCompatActivity {
 
         binding.llDonate.setOnClickListener(v -> {
             startActivity(new Intent(mContext, DonateAct.class));
+        });
+
+        binding.llCurrency.setOnClickListener(v -> {
+            changeCurrenyDialog();
         });
 
         binding.lllang.setOnClickListener(v -> {
@@ -244,6 +261,108 @@ public class MyProfileAct extends AppCompatActivity {
                     .build(this);
             startActivityForResult(intent, AUTOCOMPLETE_WORK_CODE);
         });
+
+    }
+
+    private void updateCurrency(String currentCurrency, String changeCurrency) {
+        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
+
+        HashMap<String, String> paramHash = new HashMap<>();
+        paramHash.put("user_id", modelLogin.getResult().getId());
+        paramHash.put("base_currency", "AUD");
+        paramHash.put("converter_currency", changeCurrency);
+
+        Log.e("updateCurrency", "updateCurrency = " + paramHash);
+
+        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+        Call<ResponseBody> call = api.updateCurrencyApiCall(paramHash);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                ProjectUtil.pauseProgressDialog();
+                try {
+
+                    String stringResponse = response.body().string();
+
+                    try {
+
+                        JSONObject jsonObject = new JSONObject(stringResponse);
+
+                        if (jsonObject.getString("status").equals("1")) {
+
+                            Log.e("updateCurrency", "updateCurrency = " + stringResponse);
+
+                            finishAffinity();
+                            startActivity(new Intent(mContext, SplashAct.class));
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("JSONException", "JSONException = " + e.getMessage());
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                ProjectUtil.pauseProgressDialog();
+            }
+
+        });
+    }
+
+    private void changeCurrenyDialog() {
+        Dialog dialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.change_currency_dialog);
+        dialog.setCancelable(true);
+
+        Button btContinue = dialog.findViewById(R.id.btContinue);
+        RadioButton radioUSD = dialog.findViewById(R.id.radioUSD);
+        RadioButton radioAUD = dialog.findViewById(R.id.radioAUD);
+        RadioButton radioSAR = dialog.findViewById(R.id.radioSAR);
+        RadioButton radioAED = dialog.findViewById(R.id.radioAED);
+        RadioButton radioGBP = dialog.findViewById(R.id.radioGBP);
+        RadioButton radioPKR = dialog.findViewById(R.id.radioPKR);
+
+        if (AppConstant.CURRENCY.equals("USD")) {
+            radioUSD.setChecked(true);
+        } else if (AppConstant.CURRENCY.equals("AUD")) {
+            radioAUD.setChecked(true);
+        } else if (AppConstant.CURRENCY.equals("SAR")) {
+            radioSAR.setChecked(true);
+        } else if (AppConstant.CURRENCY.equals("AED")) {
+            radioAED.setChecked(true);
+        } else if (AppConstant.CURRENCY.equals("GBP")) {
+            radioGBP.setChecked(true);
+        } else if (AppConstant.CURRENCY.equals("PKR")) {
+            radioPKR.setChecked(true);
+        } else {
+            radioAUD.setChecked(true);
+        }
+
+        dialog.getWindow().setBackgroundDrawableResource(R.color.translucent_black);
+
+        btContinue.setOnClickListener(v -> {
+            if (radioUSD.isChecked()) {
+                updateCurrency(AppConstant.CURRENCY, "USD");
+            } else if (radioAUD.isChecked()) {
+                updateCurrency(AppConstant.CURRENCY, "AUD");
+            } else if (radioSAR.isChecked()) {
+                updateCurrency(AppConstant.CURRENCY, "SAR");
+            } else if (radioAED.isChecked()) {
+                updateCurrency(AppConstant.CURRENCY, "AED");
+            } else if (radioGBP.isChecked()) {
+                updateCurrency(AppConstant.CURRENCY, "GBP");
+            } else if (radioPKR.isChecked()) {
+                updateCurrency(AppConstant.CURRENCY, "PKR");
+            }
+        });
+
+        dialog.show();
 
     }
 
@@ -378,7 +497,7 @@ public class MyProfileAct extends AppCompatActivity {
                             dialog.dismiss();
 
                         } else {
-                            Toast.makeText(mContext, jsonObject.getString("result"), Toast.LENGTH_SHORT).show();
+                            MyApplication.showAlert(mContext, jsonObject.getString("result"));
                         }
 
                     } catch (JSONException e) {
@@ -423,7 +542,8 @@ public class MyProfileAct extends AppCompatActivity {
                         if (jsonObject.getString("status").equals("1")) {
                             showAlertDialog(parentDialog);
                             Log.e("asfddasfasdf", "response = " + response);
-                        } else {}
+                        } else {
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -540,7 +660,8 @@ public class MyProfileAct extends AppCompatActivity {
                                 logoutAlertDialog();
                             }
 
-                            binding.tvWalletAmount.setText(AppConstant.CURRENCY + " " + modelLogin.getResult().getWallet());
+                            double walletAmount = Double.parseDouble(modelLogin.getResult().getWallet()) * AppConstant.CURRENT_CURRENCY_VALUE;
+                            binding.tvWalletAmount.setText(AppConstant.CURRENCY + " " + String.format("%.2f", walletAmount));
 
                         }
 
@@ -585,7 +706,7 @@ public class MyProfileAct extends AppCompatActivity {
         Dialog dialog = new Dialog(mContext, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        SendMoneyDialogBinding dialogBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext),
+        dialogBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext),
                 R.layout.send_money_dialog, null, false);
 
         dialog.setContentView(dialogBinding.getRoot());
@@ -603,15 +724,10 @@ public class MyProfileAct extends AppCompatActivity {
             } else if (!ProjectUtil.isValidEmail(dialogBinding.etEmail.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.invalid_email), Toast.LENGTH_SHORT).show();
             } else {
-                if (dialogBinding.rbUser.isChecked()) {
-                    sendMoneyAPiCall(dialog, dialogBinding.etEmail.getText().toString().trim()
-                            , dialogBinding.etEnterAmount.getText().toString().trim(), "USER");
-                } else if (dialogBinding.rbDriver.isChecked()) {
-                    sendMoneyAPiCall(dialog, dialogBinding.etEmail.getText().toString().trim()
-                            , dialogBinding.etEnterAmount.getText().toString().trim(), "DRIVER");
-                } else {
-                    MyApplication.showAlert(mContext, getString(R.string.select_user_driver_text));
-                }
+                walletTmpAmt = Double.parseDouble(dialogBinding.etEnterAmount.getText().toString().trim());
+                walletAmountWithCurrencyChange = walletTmpAmt;
+                changeToAUDTransfer(dialog, dialogBinding.etEmail.getText().toString().trim()
+                        , dialogBinding.etEnterAmount.getText().toString().trim(), "USER", AppConstant.CURRENCY);
             }
 
         });
@@ -627,6 +743,63 @@ public class MyProfileAct extends AppCompatActivity {
 
         dialog.show();
 
+    }
+
+    private void changeToAUDTransfer(Dialog dialog, String email, String amount, String type, String base) {
+        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
+
+        Log.e("changeToAUD", "URL = " + "https://api.exchangeratesapi.io/v1/latest?access_key="
+                + AppConstant.CURRENCY_KEY + "&base=" + base + "&symbols=AUD");
+
+        AndroidNetworking.get("https://api.exchangeratesapi.io/v1/latest?access_key="
+                + AppConstant.CURRENCY_KEY + "&base=" + base + "&symbols=AUD")
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        ProjectUtil.pauseProgressDialog();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONObject rates = jsonObject.getJSONObject("rates");
+                            double currencyAmount = rates.getDouble("AUD");
+
+                            walletAmountWithCurrencyChange = walletAmountWithCurrencyChange * currencyAmount;
+
+                            if (AppConstant.CURRENCY.equals("PKR")) {
+                                if (walletTmpAmt < 100.0) {
+                                    MyApplication.showAlert(mContext, getString(R.string.need_to_send_100_pkr));
+                                } else {
+                                    if (dialogBinding.rbUser.isChecked()) {
+                                        sendMoneyAPiCall(dialog, email, String.valueOf(walletAmountWithCurrencyChange), "USER");
+                                    } else if (dialogBinding.rbDriver.isChecked()) {
+                                        sendMoneyAPiCall(dialog, email, String.valueOf(walletAmountWithCurrencyChange), "DRIVER");
+                                    } else {
+                                        MyApplication.showAlert(mContext, getString(R.string.select_user_driver_text));
+                                    }
+                                }
+                            } else {
+                                if (dialogBinding.rbUser.isChecked()) {
+                                    sendMoneyAPiCall(dialog, email, dialogBinding.etEnterAmount.getText().toString().trim(), "USER");
+                                } else if (dialogBinding.rbDriver.isChecked()) {
+                                    sendMoneyAPiCall(dialog, dialogBinding.etEmail.getText().toString().trim()
+                                            , dialogBinding.etEnterAmount.getText().toString().trim(), "DRIVER");
+                                } else {
+                                    MyApplication.showAlert(mContext, getString(R.string.select_user_driver_text));
+                                }
+                            }
+
+                            Log.e("changeToAUD", "currencyAmount = " + currencyAmount);
+                            Log.e("changeToAUD", "currencyAmountRoundOFF = " + String.format("%.2f", walletAmountWithCurrencyChange));
+                            Log.e("changeToAUD", "walletAmountWithCurrencyChange = " + walletAmountWithCurrencyChange);
+                        } catch (Exception e) {
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        ProjectUtil.pauseProgressDialog();
+                    }
+                });
     }
 
     private void changePasswordDialog() {
@@ -733,19 +906,15 @@ public class MyProfileAct extends AppCompatActivity {
             }
         });
 
+        dialogBinding.tvCancel.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
         dialogBinding.ivMinus.setOnClickListener(v -> {
             if (!(dialogBinding.etMoney.getText().toString().trim().equals("") || dialogBinding.etMoney.getText().toString().trim().equals("0"))) {
                 walletTmpAmt = Double.parseDouble(dialogBinding.etMoney.getText().toString().trim()) - 1;
                 dialogBinding.etMoney.setText(String.valueOf(walletTmpAmt));
             }
-        });
-
-        dialogBinding.btDone.setOnClickListener(v -> {
-            dialog.dismiss();
-        });
-
-        dialogBinding.tvCancel.setOnClickListener(v -> {
-            dialog.dismiss();
         });
 
         dialogBinding.ivPlus.setOnClickListener(v -> {
@@ -780,12 +949,40 @@ public class MyProfileAct extends AppCompatActivity {
         dialogBinding.btDone.setOnClickListener(v -> {
             walletTmpAmt = Double.parseDouble(dialogBinding.etMoney.getText().toString().trim());
             if (TextUtils.isEmpty(dialogBinding.etMoney.getText().toString().trim())) {
-                Toast.makeText(mContext, "Please enter amount", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, getString(R.string.please_enter_amount), Toast.LENGTH_SHORT).show();
             } else if (walletTmpAmt == 0.0) {
-                Toast.makeText(mContext, "Please enter valid amount", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, getString(R.string.enter_valid_amount), Toast.LENGTH_SHORT).show();
             } else {
-                // dialog.dismiss();
-                addWalletAmountApi(String.valueOf(walletTmpAmt), dialog);
+                if (modelLogin.getResult().getCard_number() == null ||
+                        modelLogin.getResult().getCard_number().equals("")) {
+                    startActivity(new Intent(mContext, CardDetailsAct.class));
+                    Toast.makeText(mContext, getString(R.string.please_add_card), Toast.LENGTH_LONG).show();
+                } else {
+                    Card.Builder card = new Card.Builder(modelLogin.getResult().getCard_number(),
+                            Integer.valueOf(modelLogin.getResult().getExpiry_month()),
+                            Integer.valueOf(modelLogin.getResult().getExpiry_year().substring(2)),
+                            modelLogin.getResult().getCvc_code());
+
+                    Stripe stripe = new Stripe(mContext, AppConstant.STRIPE_TEST_KEY);
+
+                    ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
+                    stripe.createCardToken(
+                            card.build(), new ApiResultCallback<Token>() {
+                                @Override
+                                public void onSuccess(Token token) {
+                                    ProjectUtil.pauseProgressDialog();
+                                    walletAmountWithCurrencyChange = walletTmpAmt;
+                                    changeToAUD(AppConstant.CURRENCY, dialog, token.getId());
+                                    // addWalletAmountApi(String.valueOf(walletTmpAmt), dialog, token.getId());
+                                    Log.e("asfadasdasd", "tokentokentoken = " + token.getId());
+                                }
+
+                                @Override
+                                public void onError(@NotNull Exception e) {
+                                    ProjectUtil.pauseProgressDialog();
+                                }
+                            });
+                }
             }
         });
 
@@ -802,11 +999,57 @@ public class MyProfileAct extends AppCompatActivity {
 
     }
 
-    private void addWalletAmountApi(String amount, Dialog dialog) {
+    private void changeToAUD(String base, Dialog dialog, String token) {
+        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
+
+        Log.e("changeToAUD", "URL = " + "https://api.exchangeratesapi.io/v1/latest?access_key="
+                + AppConstant.CURRENCY_KEY + "&base=" + base + "&symbols=AUD");
+
+        AndroidNetworking.get("https://api.exchangeratesapi.io/v1/latest?access_key="
+                + AppConstant.CURRENCY_KEY + "&base=" + base + "&symbols=AUD")
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        ProjectUtil.pauseProgressDialog();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONObject rates = jsonObject.getJSONObject("rates");
+                            double currencyAmount = rates.getDouble("AUD");
+
+                            walletAmountWithCurrencyChange = walletAmountWithCurrencyChange * currencyAmount;
+
+                            if (AppConstant.CURRENCY.equals("PKR")) {
+                                if (walletTmpAmt < 100.0) {
+                                    MyApplication.showAlert(mContext, getString(R.string.need_to_add_100_pkr));
+                                } else {
+                                    addWalletAmountApi(String.format("%.2f", walletAmountWithCurrencyChange), dialog, token);
+                                }
+                            } else {
+                                addWalletAmountApi(String.format("%.2f", walletAmountWithCurrencyChange), dialog, token);
+                            }
+
+                            Log.e("changeToAUD", "currencyAmount = " + currencyAmount);
+                            Log.e("changeToAUD", "currencyAmountRoundOFF = " + String.format("%.2f", walletAmountWithCurrencyChange));
+                            Log.e("changeToAUD", "walletAmountWithCurrencyChange = " + walletAmountWithCurrencyChange);
+                        } catch (Exception e) {
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        ProjectUtil.pauseProgressDialog();
+                    }
+                });
+    }
+
+    private void addWalletAmountApi(String amount, Dialog dialog, String token) {
 
         HashMap<String, String> map = new HashMap<>();
         map.put("user_id", modelLogin.getResult().getId());
         map.put("amount", amount);
+        map.put("token", token);
+        map.put("currency", "AUD");
 
         Log.e("AcceptCancel", "AcceptCancel = " + map);
 
@@ -838,6 +1081,7 @@ public class MyProfileAct extends AppCompatActivity {
                 Log.e("sfasfsdfdsf", "Exception = " + t.getMessage());
             }
         });
+
     }
 
     @Override

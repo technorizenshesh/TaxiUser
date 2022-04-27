@@ -3,7 +3,6 @@ package com.taxiuser.activities;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -71,37 +70,43 @@ public class RideDetailsAct extends AppCompatActivity {
         binding.etDestination.setText(dataHistory.getDropofflocation());
 
         try {
-            serviceTax = Double.parseDouble(result.getService_tax());
+            serviceTax = Double.parseDouble(result.getService_tax()) * AppConstant.CURRENT_CURRENCY_VALUE;
+            serviceTax = Double.parseDouble(String.format("%.2f", serviceTax));
         } catch (Exception e) {
             serviceTax = 0.0;
         }
 
         try {
-            distanceCost = Double.parseDouble(result.getAmount());
+            distanceCost = Double.parseDouble(result.getAmount()) * AppConstant.CURRENT_CURRENCY_VALUE;
+            distanceCost = Double.parseDouble(String.format("%.2f", distanceCost));
         } catch (Exception e) {
             distanceCost = 0.0;
         }
 
         try {
-            tollCost = Double.parseDouble(result.getToll_charge());
+            tollCost = Double.parseDouble(result.getToll_charge()) * AppConstant.CURRENT_CURRENCY_VALUE;
+            tollCost = Double.parseDouble(String.format("%.2f", tollCost));
         } catch (Exception e) {
             tollCost = 0.0;
         }
 
         try {
-            otherCost = Double.parseDouble(result.getOther_charge());
+            otherCost = Double.parseDouble(result.getOther_charge()) * AppConstant.CURRENT_CURRENCY_VALUE;
+            otherCost = Double.parseDouble(String.format("%.2f", otherCost));
         } catch (Exception e) {
             otherCost = 0.0;
         }
 
         try {
-            waitingCost = Double.parseDouble(result.getWaiting_time_amount());
+            waitingCost = Double.parseDouble(result.getWaiting_time_amount()) * AppConstant.CURRENT_CURRENCY_VALUE;
+            waitingCost = Double.parseDouble(String.format("%.2f", waitingCost));
         } catch (Exception e) {
             waitingCost = 0.0;
         }
 
         try {
-            serviceCost = (distanceCost * Integer.parseInt(result.getService_tax())) / 100.0;
+            serviceCost = ((distanceCost * Integer.parseInt(result.getService_tax())) / 100.0) * AppConstant.CURRENT_CURRENCY_VALUE;
+            serviceCost = Double.parseDouble(String.format("%.2f", serviceCost));
         } catch (Exception e) {
             serviceCost = 0.0;
         }
@@ -123,12 +128,12 @@ public class RideDetailsAct extends AppCompatActivity {
         binding.etDestination.setText(dropOff);
         binding.tvServiceTax.setText("Tax@" + result.getService_tax() + "%");
         binding.tvTaxAmount.setText(AppConstant.CURRENCY + serviceCost);
-        binding.tvDistanceCost.setText(AppConstant.CURRENCY + result.getAmount());
+        binding.tvDistanceCost.setText(AppConstant.CURRENCY + distanceCost);
         binding.tvDistance.setText(result.getDistance() + " Km");
-        binding.tvTollCharge.setText(AppConstant.CURRENCY + result.getToll_charge());
-        binding.tvOtherCharge.setText(AppConstant.CURRENCY + result.getOther_charge());
-        binding.tvWaitingCharge.setText(AppConstant.CURRENCY + result.getWaiting_time_amount());
-        binding.tvTotalPay.setText(String.valueOf(totalCostFinal));
+        binding.tvTollCharge.setText(AppConstant.CURRENCY + tollCost);
+        binding.tvOtherCharge.setText(AppConstant.CURRENCY + otherCost);
+        binding.tvWaitingCharge.setText(AppConstant.CURRENCY + waitingCost);
+        binding.tvTotalPay.setText(String.format("%.2f", totalCostFinal));
         binding.tvPayType.setText(result.getPaymentType().toUpperCase());
 
         binding.tvMobile.setText(dataHistory.getDriver_details().get(0).getMobile());

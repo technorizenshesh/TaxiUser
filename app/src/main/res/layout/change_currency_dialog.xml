@@ -16,11 +16,11 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="@dimen/_10sdp"
-            app:cardElevation="@dimen/_10sdp"
             android:layout_margin="@dimen/_10sdp"
             android:background="@color/white"
-            android:elevation="@dimen/_10sdp">
+            android:elevation="@dimen/_10sdp"
+            app:cardCornerRadius="@dimen/_10sdp"
+            app:cardElevation="@dimen/_10sdp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -37,7 +37,7 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_5sdp"
                     android:gravity="center"
-                    android:text="@string/chnage_lang"
+                    android:text="@string/change_currency"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_13sdp"
                     android:textStyle="bold" />
@@ -58,57 +58,68 @@
                         android:orientation="vertical">
 
                         <RadioButton
-                            android:id="@+id/radioEng"
+                            android:id="@+id/radioUSD"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_20sdp"
                             android:buttonTint="@color/white"
-                            android:text="English"
+                            android:text="USD"
                             android:textColor="@color/white"
                             android:textSize="@dimen/_15sdp"
                             android:textStyle="bold" />
 
                         <RadioButton
-                            android:id="@+id/radioUrdu"
+                            android:id="@+id/radioAUD"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_8sdp"
                             android:buttonTint="@color/white"
-                            android:text="Urdu"
+                            android:text="AUD"
                             android:textColor="@color/white"
                             android:textSize="@dimen/_15sdp"
                             android:textStyle="bold" />
 
                         <RadioButton
-                            android:id="@+id/radioChinese"
+                            android:id="@+id/radioSAR"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_8sdp"
                             android:buttonTint="@color/white"
-                            android:text="Chinese"
+                            android:text="SAR"
                             android:textColor="@color/white"
                             android:textSize="@dimen/_15sdp"
                             android:textStyle="bold" />
 
                         <RadioButton
-                            android:id="@+id/radioArabic"
+                            android:id="@+id/radioAED"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_8sdp"
                             android:buttonTint="@color/white"
-                            android:text="Arabic"
+                            android:text="AED"
                             android:textColor="@color/white"
                             android:textSize="@dimen/_15sdp"
                             android:textStyle="bold" />
 
                         <RadioButton
-                            android:id="@+id/radioFrench"
+                            android:id="@+id/radioGBP"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:buttonTint="@color/white"
+                            android:text="GBP"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_15sdp"
+                            android:textStyle="bold" />
+
+                        <RadioButton
+                            android:id="@+id/radioPKR"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_8sdp"
                             android:layout_marginBottom="@dimen/_20sdp"
                             android:buttonTint="@color/white"
-                            android:text="French"
+                            android:text="PKR"
                             android:textColor="@color/white"
                             android:textSize="@dimen/_15sdp"
                             android:textStyle="bold" />

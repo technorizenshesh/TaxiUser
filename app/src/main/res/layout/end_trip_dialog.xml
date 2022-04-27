@@ -54,8 +54,8 @@
                     android:id="@+id/tvFrom"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_8sdp"
-                    android:layout_toRightOf="@+id/ivfrom"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_toEndOf="@+id/ivfrom"
                     android:backgroundTint="@color/white"
                     android:padding="@dimen/_5sdp"
                     android:text="1, Thrale Street, \n London,SE19HW, UK"
@@ -68,7 +68,7 @@
                     android:layout_height="@dimen/_40sdp"
                     android:layout_below="@+id/ivfrom"
                     android:layout_marginVertical="@dimen/_2sdp"
-                    android:layout_marginLeft="@dimen/_3sdp"
+                    android:layout_marginStart="@dimen/_3sdp"
                     android:background="@color/gray" />
 
                 <ImageView
@@ -83,20 +83,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_1sdp"
                     android:layout_below="@+id/tvFrom"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_toRightOf="@id/view1" />
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_toEndOf="@id/view1" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/view2"
-                    android:layout_toRightOf="@id/ivto">
+                    android:layout_toEndOf="@id/ivto">
 
                     <TextView
                         android:id="@+id/etDestination"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_8sdp"
+                        android:layout_marginStart="@dimen/_8sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:backgroundTint="@color/white"
                         android:inputType="none"

@@ -1,6 +1,7 @@
 package com.taxiuser.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -13,6 +14,7 @@ import com.taxiuser.databinding.ItemRideBookBinding;
 import com.taxiuser.models.ModelCar;
 import com.taxiuser.utils.AppConstant;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class AdapterCarTypes extends RecyclerView.Adapter<AdapterCarTypes.MyRideHolder> {
@@ -48,7 +50,15 @@ public class AdapterCarTypes extends RecyclerView.Adapter<AdapterCarTypes.MyRide
         holder.binding.setCar(arrayList.get(position));
         holder.binding.executePendingBindings();
 
-        holder.binding.tvTotal.setText(AppConstant.CURRENCY + arrayList.get(position).getTotal());
+        Log.e("fasfasdas","AppConstant.CURRENCY = " + AppConstant.CURRENCY);
+        Log.e("fasfasdas","AppConstant.CURRENT_CURRENCY_VALUE = " + AppConstant.CURRENT_CURRENCY_VALUE);
+        Log.e("fasfasdas","Double.parseDouble(arrayList.get(position).getTotal() = " + Double.parseDouble(arrayList.get(position).getTotal()));
+        Log.e("fasfasdas","Multiply = " + (Double.parseDouble(arrayList.get(position).getTotal()) * AppConstant.CURRENT_CURRENCY_VALUE));
+
+        double finalValue = (Double.parseDouble(arrayList.get(position).getTotal()) * AppConstant.CURRENT_CURRENCY_VALUE);
+        DecimalFormat f = new DecimalFormat("##.00");
+
+        holder.binding.tvTotal.setText(AppConstant.CURRENCY + " " + String.format("%.2f",finalValue));
 
         holder.binding.getRoot().setOnClickListener(v -> {
             for (int i = 0; i < arrayList.size(); i++) {
@@ -58,6 +68,7 @@ public class AdapterCarTypes extends RecyclerView.Adapter<AdapterCarTypes.MyRide
             listener.onCarSelected(arrayList.get(position), "basic_car");
             notifyDataSetChanged();
         });
+
     }
 
     @Override

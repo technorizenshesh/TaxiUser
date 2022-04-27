@@ -209,7 +209,6 @@ public class ProjectUtil {
         return formattedDate;
     }
 
-
     public static String getRealPathFromURI(Context mContext, Uri contentUri) {
         // TODO: get realpath from uri
         String stringPath = null;
@@ -239,6 +238,7 @@ public class ProjectUtil {
         Resources resources = context.getResources();
         Configuration configuration = resources.getConfiguration();
         configuration.locale = locale;
+        configuration.setLayoutDirection(locale);
         resources.updateConfiguration(configuration, resources.getDisplayMetrics());
     }
 

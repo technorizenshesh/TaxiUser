@@ -2,11 +2,6 @@ package com.taxiuser.activities;
 
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.databinding.DataBindingUtil;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -25,7 +20,11 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
-import com.facebook.login.Login;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.databinding.DataBindingUtil;
+
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
@@ -42,15 +41,24 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.taxiuser.R;
 import com.taxiuser.databinding.ActivitySignUpBinding;
 import com.taxiuser.models.ModelLogin;
-import com.taxiuser.utils.AppConstant;
 import com.taxiuser.utils.Compress;
+import com.taxiuser.utils.MyApplication;
 import com.taxiuser.utils.ProjectUtil;
 import com.taxiuser.utils.SharedPref;
+import com.taxiuser.utils.retrofitutils.Api;
+import com.taxiuser.utils.retrofitutils.ApiFactory;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SignUpAct extends AppCompatActivity {
 
@@ -70,7 +78,7 @@ public class SignUpAct extends AppCompatActivity {
     SharedPref sharedPref;
     ModelLogin modelLogin;
     private String str_image_path;
-    private LatLng latLng, workLatLng;
+    private LatLng latLng, workLatLng = new LatLng(0.0,0.0);
     String driverEmail;
 
     @Override
@@ -97,7 +105,6 @@ public class SignUpAct extends AppCompatActivity {
         itit();
 
     }
-
 
     @SuppressLint("MissingPermission")
     protected void startLocationUpdates() {
@@ -147,7 +154,9 @@ public class SignUpAct extends AppCompatActivity {
         });
 
         binding.tvTerms.setOnClickListener(v -> {
-            startActivity(new Intent(mContext, TermsConditionAct.class));
+            startActivity(new Intent(mContext, WebviewAct.class)
+                    .putExtra("url", "https://technorizen.com/australia_taxi/terms&condition.html")
+            );
         });
 
         binding.ivAlready.setOnClickListener(v -> {
@@ -201,9 +210,9 @@ public class SignUpAct extends AppCompatActivity {
                 Toast.makeText(mContext, getString(R.string.enter_city_text), Toast.LENGTH_SHORT).show();
             } else if (TextUtils.isEmpty(binding.etAdd1.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.enter_address1_text), Toast.LENGTH_SHORT).show();
-            } else if (TextUtils.isEmpty(binding.etWorkAdd.getText().toString().trim())) {
+            }/* else if (TextUtils.isEmpty(binding.etWorkAdd.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.enter_work_text), Toast.LENGTH_SHORT).show();
-            } else if (!ProjectUtil.isValidEmail(binding.etEmail.getText().toString().trim())) {
+            }*/ else if (!ProjectUtil.isValidEmail(binding.etEmail.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.enter_valid_email), Toast.LENGTH_SHORT).show();
             } else if (TextUtils.isEmpty(binding.etPassword.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_enter_pass), Toast.LENGTH_SHORT).show();
@@ -237,23 +246,60 @@ public class SignUpAct extends AppCompatActivity {
                 Log.e("signupDriver", "signupDriver = " + params);
                 Log.e("signupDriver", "fileHashMap = " + fileHashMap);
 
-                String mobileNumber = "+61" + binding.etPhone.getText().toString().trim();
-                // String mobileNumber = "+91" + binding.etPhone.getText().toString().trim();
-
-                startActivity(new Intent(mContext, VerifyAct.class)
-                        .putExtra("resgisterHashmap", params)
-                        .putExtra("mobile", mobileNumber)
-                        .putExtra("fileHashMap", fileHashMap)
-                );
+                checkCredentials(params, fileHashMap);
 
             }
 
-//          startActivity(new Intent(mContext, VerifyAct.class)
-//                  .putExtra(AppContant.TYPE, AppContant.USER)
-//          );
-
         });
 
+    }
+
+    private void checkCredentials(HashMap<String, String> params, HashMap<String, File> fileHashMap) {
+        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
+
+        HashMap<String, String> paramHash = new HashMap<>();
+        paramHash.put("mobile", binding.etPhone.getText().toString().trim());
+        paramHash.put("email", binding.etEmail.getText().toString().trim());
+
+        Log.e("asdfasdfasf", "paramHash = " + paramHash);
+
+        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+        Call<ResponseBody> call = api.checkCredentialsApi(paramHash);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                ProjectUtil.pauseProgressDialog();
+                try {
+                    String responseString = response.body().string();
+                    JSONObject jsonObject = new JSONObject(responseString);
+
+                    Log.e("responseString", "responseString = " + responseString);
+
+                    if (jsonObject.getString("status").equals("1")) {
+                        String mobileNumber = "+61" + binding.etPhone.getText().toString().trim();
+                       //  String mobileNumber = "+91" + binding.etPhone.getText().toString().trim();
+
+                        startActivity(new Intent(mContext, VerifyAct.class)
+                                .putExtra("resgisterHashmap", params)
+                                .putExtra("mobile", mobileNumber)
+                                .putExtra("fileHashMap", fileHashMap)
+                        );
+                    } else {
+                        MyApplication.showAlert(mContext, getString(R.string.email_mobile_exit));
+                    }
+
+                } catch (Exception e) {
+                    Log.e("Exception", "Exception = " + e.getMessage());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                ProjectUtil.pauseProgressDialog();
+            }
+
+        });
     }
 
     private void changeLangDialog() {

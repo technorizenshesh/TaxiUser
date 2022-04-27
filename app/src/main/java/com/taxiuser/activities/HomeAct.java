@@ -157,6 +157,7 @@ public class HomeAct extends AppCompatActivity implements OnMapReadyCallback {
         startLocationUpdates();
 
         getProfile();
+
     }
 
     private void itit() {
@@ -192,10 +193,11 @@ public class HomeAct extends AppCompatActivity implements OnMapReadyCallback {
         PicUpMarker = new MarkerOptions().title("Pick Up Location")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.blue_marker));
         DropOffMarker = new MarkerOptions().title("Drop Off Location")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.blue_marker));
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.red_marker));
 
         binding.childNavDrawer.tvEmail.setText(modelLogin.getResult().getEmail());
         binding.childNavDrawer.tvUsername.setText(modelLogin.getResult().getUser_name());
+
         Glide.with(mContext)
                 .load(modelLogin.getResult().getImage())
                 .into(binding.childNavDrawer.userImg);
@@ -203,6 +205,11 @@ public class HomeAct extends AppCompatActivity implements OnMapReadyCallback {
         binding.childNavDrawer.signout.setOnClickListener(v -> {
             binding.drawerLayout.closeDrawer(GravityCompat.START);
             ProjectUtil.logoutAppDialog(mContext);
+        });
+
+        binding.childNavDrawer.tvChangeCurrency.setOnClickListener(v -> {
+            binding.drawerLayout.closeDrawer(GravityCompat.START);
+            changeCurrenyDialog();
         });
 
         binding.childNavDrawer.tvFAQ.setOnClickListener(v -> {
@@ -405,31 +412,31 @@ public class HomeAct extends AppCompatActivity implements OnMapReadyCallback {
                 ProjectUtil.updateResources(mContext, "en");
                 sharedPref.setlanguage("lan", "en");
                 finish();
-                startActivity(new Intent(mContext, HomeAct.class));
+                startActivity(new Intent(mContext, SplashAct.class));
                 dialog.dismiss();
             } else if (radioUrdu.isChecked()) {
                 ProjectUtil.updateResources(mContext, "ur");
                 sharedPref.setlanguage("lan", "ur");
                 finish();
-                startActivity(new Intent(mContext, HomeAct.class));
+                startActivity(new Intent(mContext, SplashAct.class));
                 dialog.dismiss();
             } else if (radioArabic.isChecked()) {
                 ProjectUtil.updateResources(mContext, "ar");
                 sharedPref.setlanguage("lan", "ar");
                 finish();
-                startActivity(new Intent(mContext, HomeAct.class));
+                startActivity(new Intent(mContext, SplashAct.class));
                 dialog.dismiss();
             } else if (radioFrench.isChecked()) {
                 ProjectUtil.updateResources(mContext, "fr");
                 sharedPref.setlanguage("lan", "fr");
                 finish();
-                startActivity(new Intent(mContext, HomeAct.class));
+                startActivity(new Intent(mContext, SplashAct.class));
                 dialog.dismiss();
             } else if (radioChinese.isChecked()) {
                 ProjectUtil.updateResources(mContext, "zh");
                 sharedPref.setlanguage("lan", "zh");
                 finish();
-                startActivity(new Intent(mContext, HomeAct.class));
+                startActivity(new Intent(mContext, SplashAct.class));
                 dialog.dismiss();
             }
         });
@@ -509,7 +516,7 @@ public class HomeAct extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     private void contactUsApi(String title, String detail, Dialog parentDialog) {
-        ProjectUtil.showProgressDialog(mContext,false, getString(R.string.please_wait));
+        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
 
         HashMap<String, String> paramHash = new HashMap<>();
         paramHash.put("user_id", modelLogin.getResult().getId());
@@ -524,18 +531,14 @@ public class HomeAct extends AppCompatActivity implements OnMapReadyCallback {
                 ProjectUtil.pauseProgressDialog();
                 try {
                     String stringResponse = response.body().string();
-
                     try {
-
                         JSONObject jsonObject = new JSONObject(stringResponse);
                         Log.e("asfddasfasdf", "response = " + stringResponse);
                         if (jsonObject.getString("status").equals("1")) {
                             showAlertDialog(parentDialog);
                             Log.e("asfddasfasdf", "response = " + response);
                         } else {
-
                         }
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -945,11 +948,20 @@ public class HomeAct extends AppCompatActivity implements OnMapReadyCallback {
                 try {
                     String stringResponse = response.body().string();
                     try {
+                        Log.e("getProfilegetProfile", "getProfile = " + stringResponse);
                         JSONObject jsonObject = new JSONObject(stringResponse);
                         if (jsonObject.getString("status").equals("1")) {
 
                             modelLogin = new Gson().fromJson(stringResponse, ModelLogin.class);
                             sharedPref.setUserDetails(AppConstant.USER_DETAILS, modelLogin);
+
+                            AppConstant.CURRENCY = modelLogin.getResult().getConverter_currency().trim();
+
+                            if (modelLogin.getResult().getConverter_currency().equals("AUD")) {
+                                AppConstant.CURRENT_CURRENCY_VALUE = 1.0;
+                            } else {
+                                AppConstant.CURRENT_CURRENCY_VALUE = Double.parseDouble(modelLogin.getResult().getCurrency_amount());
+                            }
 
                             Log.e("adadadasd", "modelLogin.getResult().getRegister_id() = " + modelLogin.getResult().getRegister_id());
                             Log.e("adadadasd", "registerId = " + registerId);
@@ -973,6 +985,108 @@ public class HomeAct extends AppCompatActivity implements OnMapReadyCallback {
             }
 
         });
+
+    }
+
+    private void updateCurrency(String currentCurrency, String changeCurrency) {
+        ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
+
+        HashMap<String, String> paramHash = new HashMap<>();
+        paramHash.put("user_id", modelLogin.getResult().getId());
+        paramHash.put("base_currency", "AUD");
+        paramHash.put("converter_currency", changeCurrency);
+
+        Log.e("updateCurrency", "updateCurrency = " + paramHash);
+
+        Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
+        Call<ResponseBody> call = api.updateCurrencyApiCall(paramHash);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                ProjectUtil.pauseProgressDialog();
+                try {
+
+                    String stringResponse = response.body().string();
+
+                    try {
+
+                        JSONObject jsonObject = new JSONObject(stringResponse);
+
+                        if (jsonObject.getString("status").equals("1")) {
+
+                            Log.e("updateCurrency", "updateCurrency = " + stringResponse);
+
+                            finishAffinity();
+                            startActivity(new Intent(mContext, SplashAct.class));
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("JSONException", "JSONException = " + e.getMessage());
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                ProjectUtil.pauseProgressDialog();
+            }
+
+        });
+    }
+
+    private void changeCurrenyDialog() {
+        Dialog dialog = new Dialog(mContext, WindowManager.LayoutParams.MATCH_PARENT);
+        dialog.setContentView(R.layout.change_currency_dialog);
+        dialog.setCancelable(true);
+
+        Button btContinue = dialog.findViewById(R.id.btContinue);
+        RadioButton radioUSD = dialog.findViewById(R.id.radioUSD);
+        RadioButton radioAUD = dialog.findViewById(R.id.radioAUD);
+        RadioButton radioSAR = dialog.findViewById(R.id.radioSAR);
+        RadioButton radioAED = dialog.findViewById(R.id.radioAED);
+        RadioButton radioGBP = dialog.findViewById(R.id.radioGBP);
+        RadioButton radioPKR = dialog.findViewById(R.id.radioPKR);
+
+        if (AppConstant.CURRENCY.equals("USD")) {
+            radioUSD.setChecked(true);
+        } else if (AppConstant.CURRENCY.equals("AUD")) {
+            radioAUD.setChecked(true);
+        } else if (AppConstant.CURRENCY.equals("SAR")) {
+            radioSAR.setChecked(true);
+        } else if (AppConstant.CURRENCY.equals("AED")) {
+            radioAED.setChecked(true);
+        } else if (AppConstant.CURRENCY.equals("GBP")) {
+            radioGBP.setChecked(true);
+        } else if (AppConstant.CURRENCY.equals("PKR")) {
+            radioPKR.setChecked(true);
+        } else {
+            radioAUD.setChecked(true);
+        }
+
+        dialog.getWindow().setBackgroundDrawableResource(R.color.translucent_black);
+
+        btContinue.setOnClickListener(v -> {
+            if (radioUSD.isChecked()) {
+                updateCurrency(AppConstant.CURRENCY, "USD");
+            } else if (radioAUD.isChecked()) {
+                updateCurrency(AppConstant.CURRENCY, "AUD");
+            } else if (radioSAR.isChecked()) {
+                updateCurrency(AppConstant.CURRENCY, "SAR");
+            } else if (radioAED.isChecked()) {
+                updateCurrency(AppConstant.CURRENCY, "AED");
+            } else if (radioGBP.isChecked()) {
+                updateCurrency(AppConstant.CURRENCY, "GBP");
+            } else if (radioPKR.isChecked()) {
+                updateCurrency(AppConstant.CURRENCY, "PKR");
+            }
+        });
+
+        dialog.show();
 
     }
 
@@ -1396,7 +1510,10 @@ public class HomeAct extends AppCompatActivity implements OnMapReadyCallback {
                             }
                         }
                     } else {
-
+                         mMap.clear();
+                        PicUpMarker.position(PickUpLatLng);
+                        mMap.addMarker(PicUpMarker);
+                        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(getCameraPositionWithBearing(PickUpLatLng)));
                     }
                 } catch (Exception e) {
                     // Toast.makeText(mContext, "Exception = " + e.getMessage(), Toast.LENGTH_SHORT).show();

@@ -172,8 +172,8 @@ public class RideOptionAct extends AppCompatActivity implements OnMapReadyCallba
                                 logoutAlertDialog();
                             }
 
-                            if(modelLogin.getResult().getCovid_screen_status() != null) {
-                                if(modelLogin.getResult().getCovid_screen_status().equalsIgnoreCase("Active")) {
+                            if (modelLogin.getResult().getCovid_screen_status() != null) {
+                                if (modelLogin.getResult().getCovid_screen_status().equalsIgnoreCase("Active")) {
                                     sanitizeDialog(bootype);
                                 } else {
                                     if (bootype.equalsIgnoreCase("Now")) {
@@ -278,6 +278,8 @@ public class RideOptionAct extends AppCompatActivity implements OnMapReadyCallba
     @Override
     protected void onResume() {
         super.onResume();
+        sharedPref = SharedPref.getInstance(mContext);
+        modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
         registerReceiver(JobStatusReceiver, new IntentFilter("Job_Status_Action_Accept"));
     }
 
@@ -423,13 +425,35 @@ public class RideOptionAct extends AppCompatActivity implements OnMapReadyCallba
         });
 
         binding.btnScheduleRide.setOnClickListener(v -> {
-            getProfileNew("");
+            if (TextUtils.isEmpty(modelLogin.getResult().getMobile())) {
+                updateProfileDialog();
+            } else {
+                getProfileNew("");
+            }
         });
 
         binding.btnBook.setOnClickListener(v -> {
-            getProfileNew("Now");
+            if (TextUtils.isEmpty(modelLogin.getResult().getMobile())) {
+                updateProfileDialog();
+            } else {
+                getProfileNew("Now");
+            }
         });
 
+    }
+
+    public void updateProfileDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setMessage(R.string.please_update_profile_text)
+                .setCancelable(false)
+                .setPositiveButton(mContext.getString(R.string.ok)
+                        , new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                startActivity(new Intent(mContext, UpdateProfileAct.class));
+                            }
+                        }).create().show();
     }
 
     private void sanitizeDialog(String type) {

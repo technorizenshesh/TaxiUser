@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,17 +12,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/yellow"
-            android:paddingBottom="@dimen/_60sdp"
+            android:orientation="horizontal"
             android:paddingTop="@dimen/_30sdp"
-            android:orientation="horizontal">
+            android:paddingBottom="@dimen/_60sdp">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/cvImg"
                 android:layout_width="0dp"
-                android:layout_weight="0.2"
                 android:layout_height="@dimen/_50sdp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_weight="0.2"
                 android:padding="@dimen/_1sdp"
                 android:src="@drawable/user_ic"
                 app:civ_border_color="@color/white"
@@ -31,8 +30,8 @@
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="0dp"
-                android:layout_weight="0.7"
                 android:layout_height="wrap_content"
+                android:layout_weight="0.7"
                 android:orientation="vertical">
 
                 <TextView
@@ -40,9 +39,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_5sdp"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
                     android:fontFamily="@font/poppins_medium"
                     android:text="@string/wallet_balance"
                     android:textColor="@color/white"
@@ -54,8 +53,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
                     android:fontFamily="@font/poppins_medium"
                     android:text="@string/wallet_balance"
                     android:textColor="@color/white"
@@ -68,9 +67,9 @@
                 android:id="@+id/editProfile"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_40sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_weight="0.1"
-                android:layout_marginRight="@dimen/_10sdp"
-                android:src="@drawable/edit_icon_white"/>
+                android:src="@drawable/edit_icon_white" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -79,10 +78,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:elevation="@dimen/_10sdp"
-            android:layout_marginRight="@dimen/_10sdp"
-            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="-60dp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:elevation="@dimen/_10sdp"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="@dimen/_10sdp"
             app:cardElevation="@dimen/_10sdp">
@@ -95,15 +94,17 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_5sdp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:fontFamily="@font/poppins_medium"
                         android:text="@string/wallet_balance"
                         android:textColor="@color/black"
@@ -114,11 +115,11 @@
                         android:id="@+id/tvWalletAmount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:fontFamily="@font/poppins_medium"
                         android:textColor="@color/btn_yello_color_selected"
                         android:textSize="@dimen/_12sdp"
@@ -129,23 +130,23 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_1sdp"
-                    android:background="@color/light_gray"/>
+                    android:background="@color/light_gray" />
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:weightSum="3"
                     android:layout_marginBottom="@dimen/_10sdp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:weightSum="3">
 
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:id="@+id/llBooking"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:clickable="true"
+                        android:layout_weight="1"
                         android:background="@drawable/ripple_effect_back"
+                        android:clickable="true"
+                        android:gravity="center"
                         android:orientation="vertical">
 
                         <ImageView
@@ -157,10 +158,10 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
+                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
-                            android:layout_marginLeft="@dimen/_10sdp"
-                            android:layout_marginRight="@dimen/_10sdp"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_10sdp"
                             android:gravity="center"
                             android:text="@string/bookings"
                             android:textColor="@color/black"
@@ -171,10 +172,10 @@
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:id="@+id/llWallet"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:clickable="true"
-                        android:background="@drawable/ripple_effect_back"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/ripple_effect_back"
+                        android:clickable="true"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -187,10 +188,10 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
+                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
-                            android:layout_marginLeft="@dimen/_10sdp"
-                            android:layout_marginRight="@dimen/_10sdp"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_10sdp"
                             android:gravity="center"
                             android:text="@string/wallet"
                             android:textColor="@color/black"
@@ -201,10 +202,10 @@
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:id="@+id/topUp"
                         android:layout_width="0dp"
-                        android:clickable="true"
-                        android:background="@drawable/ripple_effect_back"
-                        android:layout_weight="1"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/ripple_effect_back"
+                        android:clickable="true"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -217,10 +218,10 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
-                            android:layout_marginLeft="@dimen/_10sdp"
-                            android:layout_marginRight="@dimen/_10sdp"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_10sdp"
                             android:gravity="center"
                             android:text="@string/top_up"
                             android:textColor="@color/black"
@@ -237,8 +238,8 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="none"
-            android:fillViewport="true">
+            android:fillViewport="true"
+            android:scrollbars="none">
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -249,9 +250,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
                     android:fontFamily="@font/poppins_medium"
                     android:text="@string/general_settings"
                     android:textColor="@color/black"
@@ -262,9 +263,9 @@
                     android:id="@+id/llYourTrip"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_8sdp"
+                    android:background="@drawable/ripple_effect_back"
                     android:clickable="true"
-                    android:background="@drawable/ripple_effect_back">
+                    android:padding="@dimen/_8sdp">
 
                     <ImageView
                         android:id="@+id/img1"
@@ -276,9 +277,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:layout_toRightOf="@+id/img1"
+                        android:layout_marginStart="@dimen/_35sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:fontFamily="@font/poppins_medium"
                         android:includeFontPadding="false"
                         android:text="@string/your_trips"
@@ -289,7 +289,7 @@
                         android:id="@+id/ivYourTrips"
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:src="@drawable/right_gray_arrow" />
 
                 </RelativeLayout>
@@ -297,15 +297,15 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_1sdp"
-                    android:background="@color/gray_new"/>
+                    android:background="@color/gray_new" />
 
                 <RelativeLayout
                     android:id="@+id/llBusinessProfile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_8sdp"
+                    android:background="@drawable/ripple_effect_back"
                     android:clickable="true"
-                    android:background="@drawable/ripple_effect_back">
+                    android:padding="@dimen/_8sdp">
 
                     <ImageView
                         android:id="@+id/img222"
@@ -317,9 +317,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:layout_toRightOf="@+id/img222"
+                        android:layout_marginStart="@dimen/_35sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:fontFamily="@font/poppins_medium"
                         android:includeFontPadding="false"
                         android:text="@string/business_profile"
@@ -330,7 +329,7 @@
                         android:id="@+id/ivBusiness"
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:layout_alignParentRight="true"
+                         android:layout_alignParentEnd="true"
                         android:src="@drawable/right_gray_arrow" />
 
                 </RelativeLayout>
@@ -338,15 +337,15 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_1sdp"
-                    android:background="@color/gray_new"/>
+                    android:background="@color/gray_new" />
 
                 <RelativeLayout
                     android:id="@+id/llNotifications"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_8sdp"
+                    android:background="@drawable/ripple_effect_back"
                     android:clickable="true"
-                    android:background="@drawable/ripple_effect_back">
+                    android:padding="@dimen/_8sdp">
 
                     <ImageView
                         android:id="@+id/img1111"
@@ -358,9 +357,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:layout_toRightOf="@+id/img1111"
+                        android:layout_marginStart="@dimen/_35sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:fontFamily="@font/poppins_medium"
                         android:includeFontPadding="false"
                         android:text="@string/notifications"
@@ -371,7 +369,7 @@
                         android:id="@+id/ivNotification"
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:layout_alignParentRight="true"
+                         android:layout_alignParentEnd="true"
                         android:src="@drawable/right_gray_arrow" />
 
                 </RelativeLayout>
@@ -379,15 +377,15 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_1sdp"
-                    android:background="@color/gray_new"/>
+                    android:background="@color/gray_new" />
 
                 <RelativeLayout
                     android:id="@+id/llChangePass"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_8sdp"
+                    android:background="@drawable/ripple_effect_back"
                     android:clickable="true"
-                    android:background="@drawable/ripple_effect_back">
+                    android:padding="@dimen/_8sdp">
 
                     <ImageView
                         android:id="@+id/img2"
@@ -399,9 +397,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:layout_toRightOf="@+id/img2"
+                        android:layout_marginStart="@dimen/_35sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:fontFamily="@font/poppins_medium"
                         android:includeFontPadding="false"
                         android:text="@string/change_pass"
@@ -412,7 +409,7 @@
                         android:id="@+id/ivChangePass"
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:layout_alignParentRight="true"
+                         android:layout_alignParentEnd="true"
                         android:src="@drawable/right_gray_arrow" />
 
                 </RelativeLayout>
@@ -420,15 +417,15 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_1sdp"
-                    android:background="@color/gray_new"/>
+                    android:background="@color/gray_new" />
 
                 <RelativeLayout
                     android:id="@+id/llActiveTrips"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_8sdp"
+                    android:background="@drawable/ripple_effect_back"
                     android:clickable="true"
-                    android:background="@drawable/ripple_effect_back">
+                    android:padding="@dimen/_8sdp">
 
                     <ImageView
                         android:id="@+id/img21"
@@ -440,9 +437,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:layout_toRightOf="@+id/img21"
+                        android:layout_marginStart="@dimen/_35sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:fontFamily="@font/poppins_medium"
                         android:includeFontPadding="false"
                         android:text="@string/schedule_rides"
@@ -453,7 +449,7 @@
                         android:id="@+id/ivYourTrips21"
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:layout_alignParentRight="true"
+                         android:layout_alignParentEnd="true"
                         android:src="@drawable/right_gray_arrow" />
 
                 </RelativeLayout>
@@ -461,15 +457,15 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_1sdp"
-                    android:background="@color/gray_new"/>
+                    android:background="@color/gray_new" />
 
                 <RelativeLayout
                     android:id="@+id/llPersonalDetails"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_8sdp"
+                    android:background="@drawable/ripple_effect_back"
                     android:clickable="true"
-                    android:background="@drawable/ripple_effect_back">
+                    android:padding="@dimen/_8sdp">
 
                     <ImageView
                         android:id="@+id/img211"
@@ -481,9 +477,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:layout_toRightOf="@+id/img211"
+                        android:layout_marginStart="@dimen/_35sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:fontFamily="@font/poppins_medium"
                         android:includeFontPadding="false"
                         android:text="@string/personal_details"
@@ -494,7 +489,7 @@
                         android:id="@+id/ivYourTrips211"
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:layout_alignParentRight="true"
+                         android:layout_alignParentEnd="true"
                         android:src="@drawable/right_gray_arrow" />
 
                 </RelativeLayout>
@@ -502,15 +497,15 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_1sdp"
-                    android:background="@color/gray_new"/>
+                    android:background="@color/gray_new" />
 
                 <RelativeLayout
                     android:id="@+id/llFavDrivers"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_8sdp"
+                    android:background="@drawable/ripple_effect_back"
                     android:clickable="true"
-                    android:background="@drawable/ripple_effect_back">
+                    android:padding="@dimen/_8sdp">
 
                     <ImageView
                         android:id="@+id/img212"
@@ -522,9 +517,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:layout_toRightOf="@+id/img212"
+                        android:layout_marginStart="@dimen/_35sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:fontFamily="@font/poppins_medium"
                         android:includeFontPadding="false"
                         android:text="@string/favourite_drivers"
@@ -534,7 +528,7 @@
                     <ImageView
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:layout_alignParentRight="true"
+                         android:layout_alignParentEnd="true"
                         android:src="@drawable/right_gray_arrow" />
 
                 </RelativeLayout>
@@ -542,15 +536,15 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_1sdp"
-                    android:background="@color/gray_new"/>
+                    android:background="@color/gray_new" />
 
                 <RelativeLayout
                     android:id="@+id/llDonate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_8sdp"
+                    android:background="@drawable/ripple_effect_back"
                     android:clickable="true"
-                    android:background="@drawable/ripple_effect_back">
+                    android:padding="@dimen/_8sdp">
 
                     <ImageView
                         android:id="@+id/img1121"
@@ -562,9 +556,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:layout_toRightOf="@+id/img1121"
+                        android:layout_marginStart="@dimen/_35sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:fontFamily="@font/poppins_medium"
                         android:includeFontPadding="false"
                         android:text="@string/donate"
@@ -574,7 +567,7 @@
                     <ImageView
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:layout_alignParentRight="true"
+                         android:layout_alignParentEnd="true"
                         android:src="@drawable/right_gray_arrow" />
 
                 </RelativeLayout>
@@ -582,15 +575,15 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_1sdp"
-                    android:background="@color/gray_new"/>
+                    android:background="@color/gray_new" />
 
                 <RelativeLayout
                     android:id="@+id/llCurrency"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_8sdp"
+                    android:background="@drawable/ripple_effect_back"
                     android:clickable="true"
-                    android:background="@drawable/ripple_effect_back">
+                    android:padding="@dimen/_8sdp">
 
                     <ImageView
                         android:id="@+id/img112123"
@@ -602,9 +595,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:layout_toRightOf="@+id/img112123"
+                        android:layout_marginStart="@dimen/_35sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:fontFamily="@font/poppins_medium"
                         android:includeFontPadding="false"
                         android:text="@string/change_currency"
@@ -614,7 +606,7 @@
                     <ImageView
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:layout_alignParentRight="true"
+                         android:layout_alignParentEnd="true"
                         android:src="@drawable/right_gray_arrow" />
 
                 </RelativeLayout>
@@ -622,15 +614,15 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_1sdp"
-                    android:background="@color/gray_new"/>
+                    android:background="@color/gray_new" />
 
                 <RelativeLayout
                     android:id="@+id/lllang"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_8sdp"
+                    android:background="@drawable/ripple_effect_back"
                     android:clickable="true"
-                    android:background="@drawable/ripple_effect_back">
+                    android:padding="@dimen/_8sdp">
 
                     <ImageView
                         android:id="@+id/imglanguage"
@@ -642,9 +634,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:layout_toRightOf="@+id/imglanguage"
+                        android:layout_marginStart="@dimen/_35sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:fontFamily="@font/poppins_medium"
                         android:includeFontPadding="false"
                         android:text="@string/change_language"
@@ -654,7 +645,7 @@
                     <ImageView
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:layout_alignParentRight="true"
+                         android:layout_alignParentEnd="true"
                         android:src="@drawable/right_gray_arrow" />
 
                 </RelativeLayout>
@@ -663,9 +654,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
                     android:fontFamily="@font/poppins_medium"
                     android:text="@string/favorite_locations"
                     android:textColor="@color/black"
@@ -676,9 +667,9 @@
                     android:id="@+id/llHomeAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_8sdp"
+                    android:background="@drawable/ripple_effect_back"
                     android:clickable="true"
-                    android:background="@drawable/ripple_effect_back">
+                    android:padding="@dimen/_8sdp">
 
                     <ImageView
                         android:id="@+id/img55"
@@ -691,9 +682,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_25sdp"
-                        android:layout_toRightOf="@+id/img55"
+                        android:layout_marginStart="@dimen/_35sdp"
+                        android:layout_marginEnd="@dimen/_25sdp"
                         android:orientation="vertical">
 
                         <TextView
@@ -721,7 +711,7 @@
                     <ImageView
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:layout_alignParentRight="true"
+                         android:layout_alignParentEnd="true"
                         android:src="@drawable/right_gray_arrow" />
 
                 </RelativeLayout>
@@ -729,15 +719,15 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_1sdp"
-                    android:background="@color/gray_new"/>
+                    android:background="@color/gray_new" />
 
                 <RelativeLayout
                     android:id="@+id/llWorkAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_8sdp"
+                    android:background="@drawable/ripple_effect_back"
                     android:clickable="true"
-                    android:background="@drawable/ripple_effect_back">
+                    android:padding="@dimen/_8sdp">
 
                     <ImageView
                         android:id="@+id/img555"
@@ -750,9 +740,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_25sdp"
-                        android:layout_toRightOf="@+id/img555"
+                        android:layout_marginStart="@dimen/_35sdp"
+                        android:layout_marginEnd="@dimen/_25sdp"
                         android:orientation="vertical">
 
                         <TextView
@@ -780,7 +769,7 @@
                     <ImageView
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:layout_alignParentRight="true"
+                         android:layout_alignParentEnd="true"
                         android:src="@drawable/right_gray_arrow" />
 
                 </RelativeLayout>
@@ -789,9 +778,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
                     android:fontFamily="@font/poppins_medium"
                     android:text="@string/payment"
                     android:textColor="@color/black"
@@ -802,9 +791,9 @@
                     android:id="@+id/llPaymentMethod"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_8sdp"
+                    android:background="@drawable/ripple_effect_back"
                     android:clickable="true"
-                    android:background="@drawable/ripple_effect_back">
+                    android:padding="@dimen/_8sdp">
 
                     <ImageView
                         android:id="@+id/img88"
@@ -816,9 +805,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:layout_toRightOf="@+id/img88"
+                        android:layout_marginStart="@dimen/_35sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:fontFamily="@font/poppins_medium"
                         android:includeFontPadding="false"
                         android:text="@string/pay_method"
@@ -828,7 +816,7 @@
                     <ImageView
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:layout_alignParentRight="true"
+                         android:layout_alignParentEnd="true"
                         android:src="@drawable/right_gray_arrow" />
 
                 </RelativeLayout>
@@ -836,15 +824,15 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_1sdp"
-                    android:background="@color/gray_new"/>
+                    android:background="@color/gray_new" />
 
                 <RelativeLayout
                     android:id="@+id/llMyWallet"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_8sdp"
+                    android:background="@drawable/ripple_effect_back"
                     android:clickable="true"
-                    android:background="@drawable/ripple_effect_back">
+                    android:padding="@dimen/_8sdp">
 
                     <ImageView
                         android:id="@+id/img5"
@@ -856,9 +844,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:layout_toRightOf="@+id/img5"
+                        android:layout_marginStart="@dimen/_35sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:fontFamily="@font/poppins_medium"
                         android:includeFontPadding="false"
                         android:text="@string/my_wallet"
@@ -868,7 +855,7 @@
                     <ImageView
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:layout_alignParentRight="true"
+                         android:layout_alignParentEnd="true"
                         android:src="@drawable/right_gray_arrow" />
 
                 </RelativeLayout>
@@ -876,15 +863,15 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_1sdp"
-                    android:background="@color/gray_new"/>
+                    android:background="@color/gray_new" />
 
                 <RelativeLayout
                     android:id="@+id/llAddMoney"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_8sdp"
+                    android:background="@drawable/ripple_effect_back"
                     android:clickable="true"
-                    android:background="@drawable/ripple_effect_back">
+                    android:padding="@dimen/_8sdp">
 
                     <ImageView
                         android:id="@+id/img6"
@@ -896,9 +883,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:layout_toRightOf="@+id/img6"
+                        android:layout_marginStart="@dimen/_35sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:fontFamily="@font/poppins_medium"
                         android:includeFontPadding="false"
                         android:text="@string/add_money"
@@ -908,7 +894,7 @@
                     <ImageView
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:layout_alignParentRight="true"
+                         android:layout_alignParentEnd="true"
                         android:src="@drawable/right_gray_arrow" />
 
                 </RelativeLayout>
@@ -916,15 +902,15 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_1sdp"
-                    android:background="@color/gray_new"/>
+                    android:background="@color/gray_new" />
 
                 <RelativeLayout
                     android:id="@+id/llSendMoney"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_8sdp"
+                    android:background="@drawable/ripple_effect_back"
                     android:clickable="true"
-                    android:background="@drawable/ripple_effect_back">
+                    android:padding="@dimen/_8sdp">
 
                     <ImageView
                         android:id="@+id/img8"
@@ -936,9 +922,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:layout_toRightOf="@+id/img8"
+                        android:layout_marginStart="@dimen/_35sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:fontFamily="@font/poppins_medium"
                         android:includeFontPadding="false"
                         android:text="@string/send_money"
@@ -948,7 +933,7 @@
                     <ImageView
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:layout_alignParentRight="true"
+                         android:layout_alignParentEnd="true"
                         android:src="@drawable/right_gray_arrow" />
 
                 </RelativeLayout>
@@ -957,9 +942,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
                     android:fontFamily="@font/poppins_medium"
                     android:text="@string/support"
                     android:textColor="@color/black"
@@ -970,9 +955,9 @@
                     android:id="@+id/llAboutUs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_8sdp"
+                    android:background="@drawable/ripple_effect_back"
                     android:clickable="true"
-                    android:background="@drawable/ripple_effect_back">
+                    android:padding="@dimen/_8sdp">
 
                     <ImageView
                         android:id="@+id/img7"
@@ -984,9 +969,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:layout_toRightOf="@+id/img7"
+                        android:layout_marginStart="@dimen/_35sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:fontFamily="@font/poppins_medium"
                         android:includeFontPadding="false"
                         android:text="@string/about_us"
@@ -996,7 +980,7 @@
                     <ImageView
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:layout_alignParentRight="true"
+                         android:layout_alignParentEnd="true"
                         android:src="@drawable/right_gray_arrow" />
 
                 </RelativeLayout>
@@ -1004,15 +988,15 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_1sdp"
-                    android:background="@color/gray_new"/>
+                    android:background="@color/gray_new" />
 
                 <RelativeLayout
                     android:id="@+id/llEmergencyContact"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_8sdp"
+                    android:background="@drawable/ripple_effect_back"
                     android:clickable="true"
-                    android:background="@drawable/ripple_effect_back">
+                    android:padding="@dimen/_8sdp">
 
                     <ImageView
                         android:id="@+id/img111"
@@ -1024,9 +1008,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:layout_toRightOf="@+id/img111"
+                        android:layout_marginStart="@dimen/_35sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:fontFamily="@font/poppins_medium"
                         android:includeFontPadding="false"
                         android:text="@string/emergency_contacts"
@@ -1036,7 +1019,7 @@
                     <ImageView
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:layout_alignParentRight="true"
+                         android:layout_alignParentEnd="true"
                         android:src="@drawable/right_gray_arrow" />
 
                 </RelativeLayout>
@@ -1044,15 +1027,15 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_1sdp"
-                    android:background="@color/gray_new"/>
+                    android:background="@color/gray_new" />
 
                 <RelativeLayout
                     android:id="@+id/llPrivacyPolicy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_8sdp"
+                    android:background="@drawable/ripple_effect_back"
                     android:clickable="true"
-                    android:background="@drawable/ripple_effect_back">
+                    android:padding="@dimen/_8sdp">
 
                     <ImageView
                         android:id="@+id/img9"
@@ -1064,9 +1047,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:layout_toRightOf="@+id/img9"
+                        android:layout_marginStart="@dimen/_35sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:fontFamily="@font/poppins_medium"
                         android:includeFontPadding="false"
                         android:text="@string/privacy_policy"
@@ -1076,7 +1058,7 @@
                     <ImageView
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:layout_alignParentRight="true"
+                         android:layout_alignParentEnd="true"
                         android:src="@drawable/right_gray_arrow" />
 
                 </RelativeLayout>
@@ -1084,15 +1066,15 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_1sdp"
-                    android:background="@color/gray_new"/>
+                    android:background="@color/gray_new" />
 
                 <RelativeLayout
                     android:id="@+id/llTermsAndCondition"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_8sdp"
+                    android:background="@drawable/ripple_effect_back"
                     android:clickable="true"
-                    android:background="@drawable/ripple_effect_back">
+                    android:padding="@dimen/_8sdp">
 
                     <ImageView
                         android:id="@+id/img10"
@@ -1104,9 +1086,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:layout_toRightOf="@+id/img10"
+                        android:layout_marginStart="@dimen/_35sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:fontFamily="@font/poppins_medium"
                         android:includeFontPadding="false"
                         android:text="@string/terms_and_conditions"
@@ -1116,22 +1097,23 @@
                     <ImageView
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:layout_alignParentRight="true"
+                         android:layout_alignParentEnd="true"
                         android:src="@drawable/right_gray_arrow" />
 
                 </RelativeLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_1sdp"
-                    android:background="@color/gray_new"/>
+                    android:background="@color/gray_new" />
 
                 <RelativeLayout
                     android:id="@+id/llFAQ"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_8sdp"
+                    android:background="@drawable/ripple_effect_back"
                     android:clickable="true"
-                    android:background="@drawable/ripple_effect_back">
+                    android:padding="@dimen/_8sdp">
 
                     <ImageView
                         android:id="@+id/img1000"
@@ -1143,9 +1125,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:layout_toRightOf="@+id/img1000"
+                        android:layout_marginStart="@dimen/_35sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:fontFamily="@font/poppins_medium"
                         android:includeFontPadding="false"
                         android:text="@string/faq"
@@ -1155,7 +1136,7 @@
                     <ImageView
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:layout_alignParentRight="true"
+                         android:layout_alignParentEnd="true"
                         android:src="@drawable/right_gray_arrow" />
 
                 </RelativeLayout>
@@ -1163,15 +1144,15 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_1sdp"
-                    android:background="@color/gray_new"/>
+                    android:background="@color/gray_new" />
 
                 <RelativeLayout
                     android:id="@+id/llLiveChat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_8sdp"
+                    android:background="@drawable/ripple_effect_back"
                     android:clickable="true"
-                    android:background="@drawable/ripple_effect_back">
+                    android:padding="@dimen/_8sdp">
 
                     <ImageView
                         android:id="@+id/img121"
@@ -1183,9 +1164,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:layout_toRightOf="@+id/img121"
+                        android:layout_marginStart="@dimen/_35sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:fontFamily="@font/poppins_medium"
                         android:includeFontPadding="false"
                         android:text="@string/live_chat"
@@ -1195,7 +1175,7 @@
                     <ImageView
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:layout_alignParentRight="true"
+                         android:layout_alignParentEnd="true"
                         android:src="@drawable/right_gray_arrow" />
 
                 </RelativeLayout>
@@ -1203,15 +1183,15 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_1sdp"
-                    android:background="@color/gray_new"/>
+                    android:background="@color/gray_new" />
 
                 <RelativeLayout
                     android:id="@+id/llContactUs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_8sdp"
+                    android:background="@drawable/ripple_effect_back"
                     android:clickable="true"
-                    android:background="@drawable/ripple_effect_back">
+                    android:padding="@dimen/_8sdp">
 
                     <ImageView
                         android:id="@+id/img11"
@@ -1223,9 +1203,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:layout_toRightOf="@+id/img11"
+                        android:layout_marginStart="@dimen/_35sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:fontFamily="@font/poppins_medium"
                         android:includeFontPadding="false"
                         android:text="@string/contact_us"
@@ -1235,7 +1214,7 @@
                     <ImageView
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:layout_alignParentRight="true"
+                         android:layout_alignParentEnd="true"
                         android:src="@drawable/right_gray_arrow" />
 
                 </RelativeLayout>
@@ -1244,9 +1223,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
                     android:fontFamily="@font/poppins_medium"
                     android:text="@string/other"
                     android:textColor="@color/black"
@@ -1257,10 +1236,10 @@
                     android:id="@+id/rlLogout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_8sdp"
                     android:layout_marginBottom="@dimen/_30sdp"
+                    android:background="@drawable/ripple_effect_back"
                     android:clickable="true"
-                    android:background="@drawable/ripple_effect_back">
+                    android:padding="@dimen/_8sdp">
 
                     <ImageView
                         android:id="@+id/img12"
@@ -1272,9 +1251,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:layout_toRightOf="@+id/img12"
+                        android:layout_marginStart="@dimen/_35sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:fontFamily="@font/poppins_medium"
                         android:includeFontPadding="false"
                         android:text="@string/logout"
@@ -1284,7 +1262,7 @@
                     <ImageView
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:layout_alignParentRight="true"
+                         android:layout_alignParentEnd="true"
                         android:src="@drawable/right_gray_arrow" />
 
                 </RelativeLayout>

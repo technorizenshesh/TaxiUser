@@ -186,7 +186,7 @@ public class TrackAct extends AppCompatActivity implements OnMapReadyCallback {
             binding.tvCarName.setText("Basic");
         }
 
-        binding.tvPrice.setText(AppConstant.CURRENCY + (int) Double.parseDouble(result.getAmount()));
+        binding.tvPrice.setText(AppConstant.CURRENCY + " " + (int) (Double.parseDouble(result.getAmount()) * AppConstant.CURRENT_CURRENCY_VALUE));
         binding.tvTime.setText(result.getEstimateTime() + " Min");
 
         binding.btnBack.setOnClickListener(v -> {

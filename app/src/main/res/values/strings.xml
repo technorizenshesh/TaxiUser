@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">TaxiUser</string>
+   <!-- AIzaSyBcszOHVLH_XNm0BrcCjTxz59LDBak2qBs-->
+
+
+    <string name="google_maps_key" translatable="false">AIzaSyBcszOHVLH_XNm0BrcCjTxz59LDBak2qBs</string>
     <string name="api_key" translatable="false">AIzaSyAAjp4wuz5FyteoKH3Yp7Cv8pS1K86fJw0</string>
     <string name="facebook_app_id">644030573631148</string>
     <string name="fb_login_protocol_scheme">fb644030573631148</string>
@@ -13,6 +17,7 @@
     <string name="enter_name_firsttext">Please enter your first name</string>
     <string name="enter_name_lasttext">Please enter your last name</string>
     <string name="enter_email_text">Please enter your email</string>
+    <string name="enter_business_email_text">Please enter business email</string>
     <string name="enter_phone_text">Please enter your phone number</string>
     <string name="enter_valid_email">Please enter valid email</string>
     <string name="please_enter_pass">Please enter password</string>
@@ -115,7 +120,7 @@
     <string name="work_place">Work Place</string>
     <string name="set_current_loc">Set Current Location</string>
     <string name="recent_locations">Recent Locations</string>
-    <string name="work_address">Work Address</string>
+    <string name="work_address">Work Address(Optional)</string>
     <string name="done">Done</string>
     <string name="please_select_pickup_loc">Please select pickup location</string>
     <string name="please_select_drop_loc">Please select drop location</string>
@@ -266,4 +271,13 @@
     <string name="you_have_no_ride">You Have No Active Ride</string>
     <string name="you_have">You Have</string>
     <string name="active_rides">Active Rides</string>
+    <string name="enter_valid_amount">Please enter valid amount</string>
+    <string name="business_email">Business Email</string>
+    <string name="you_can_also_update_your_business_email_here">You can also update your business email here</string>
+    <string name="please_update_profile_text">Before Booking Please update your profile First</string>
+    <string name="email_mobile_exit">Email or mobile number already exist.</string>
+    <string name="need_to_add_100_pkr">You need to add atleast 100 PKR to your wallet</string>
+    <string name="need_to_send_100_pkr">You need to send atleast 100 PKR from your wallet</string>
+    <string name="sar_currency_text">You need to add at least 5 SAR to your wallet</string>
+    <string name="aed_currency_text">You need to add at least 5 AED to your wallet</string>
 </resources>

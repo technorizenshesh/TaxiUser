@@ -44,9 +44,17 @@ public class ModelLogin implements Serializable {
 
         private String expiry_month;
 
+        private String base_currency;
+
+        private String converter_currency;
+
+        private String currency_amount;
+
         private String cvc_code;
 
         private String expiry_year;
+
+        private String business_email;
 
         private String covid_screen_status;
 
@@ -147,6 +155,38 @@ public class ModelLogin implements Serializable {
         private String step;
 
         private String brand;
+
+        public String getBase_currency() {
+            return base_currency;
+        }
+
+        public void setBase_currency(String base_currency) {
+            this.base_currency = base_currency;
+        }
+
+        public String getConverter_currency() {
+            return converter_currency;
+        }
+
+        public void setConverter_currency(String converter_currency) {
+            this.converter_currency = converter_currency;
+        }
+
+        public String getCurrency_amount() {
+            return currency_amount;
+        }
+
+        public void setCurrency_amount(String currency_amount) {
+            this.currency_amount = currency_amount;
+        }
+
+        public String getBusiness_email() {
+            return business_email;
+        }
+
+        public void setBusiness_email(String business_email) {
+            this.business_email = business_email;
+        }
 
         public String getCovid_screen_status() {
             return covid_screen_status;

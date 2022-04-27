@@ -374,7 +374,12 @@ public class LoginAct extends AppCompatActivity {
         ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
 
         HashMap<String, String> paramHash = new HashMap<>();
-        paramHash.put("email", user.getEmail());
+        if(user.getEmail() == null){
+            paramHash.put("email", "");
+        } else {
+            paramHash.put("email", user.getEmail());
+        }
+
         paramHash.put("register_id", registerId);
 
         Log.e("asdfasdfasf", "paramHash = " + paramHash);
@@ -454,11 +459,13 @@ public class LoginAct extends AppCompatActivity {
 
         HashMap<String, String> paramHash = new HashMap<>();
         paramHash.put("user_name", username);
+
         if (email == null) {
             paramHash.put("email", "");
         } else {
             paramHash.put("email", email);
         }
+
         paramHash.put("mobile", "");
         paramHash.put("lat", "");
         paramHash.put("lon", "");
@@ -584,6 +591,7 @@ public class LoginAct extends AppCompatActivity {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
+                e.printStackTrace();
                 // Google Sign In failed, update UI appropriately
                 // ...
             }
