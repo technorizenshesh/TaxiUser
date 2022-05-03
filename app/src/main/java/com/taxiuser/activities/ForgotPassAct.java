@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.taxiuser.R;
 import com.taxiuser.databinding.ActivityForgotPassBinding;
+import com.taxiuser.utils.AppConstant;
 import com.taxiuser.utils.InternetConnection;
 import com.taxiuser.utils.ProjectUtil;
 import com.taxiuser.utils.retrofitutils.Api;
@@ -61,7 +62,7 @@ public class ForgotPassAct extends AppCompatActivity {
 
         HashMap<String, String> paramHash = new HashMap<>();
         paramHash.put("email", binding.etEmail.getText().toString().trim());
-
+        paramHash.put("type", AppConstant.USER);
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
         Call<ResponseBody> call = api.forgotPass(paramHash);
         call.enqueue(new Callback<ResponseBody>() {
