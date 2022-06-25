@@ -3,8 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/MyProjects/TaxiUser/app/src/main/res/layout/accept_driver_dialog.xml" value="0.1" />
+        <entry key="..\:/MyProjects/TaxiUser/app/src/main/res/layout/activity_home.xml" value="0.1" />
         <entry key="..\:/MyProjects/TaxiUser/app/src/main/res/layout/activity_login.xml" value="0.1" />
+        <entry key="..\:/MyProjects/TaxiUser/app/src/main/res/layout/activity_ride_option.xml" value="0.1" />
         <entry key="..\:/MyProjects/TaxiUser/app/src/main/res/layout/activity_sign_up.xml" value="0.1" />
+        <entry key="..\:/MyProjects/TaxiUser/app/src/main/res/layout/activity_track.xml" value="0.1" />
+        <entry key="..\:/MyProjects/TaxiUser/app/src/main/res/layout/address_pick_dialog_fullscreen.xml" value="0.1" />
+        <entry key="..\:/MyProjects/TaxiUser/app/src/main/res/layout/app_bar_dashboard.xml" value="0.1" />
+        <entry key="..\:/MyProjects/TaxiUser/app/src/main/res/layout/dialog_search_driver.xml" value="0.20416666666666666" />
+        <entry key="..\:/MyProjects/TaxiUser/app/src/main/res/layout/item_ride_book.xml" value="0.1875" />
+        <entry key="..\:/MyProjects/TaxiUser/app/src/main/res/layout/schedule_booking_dialog.xml" value="0.18854166666666666" />
       </map>
     </option>
   </component>

@@ -1,5 +1,6 @@
 package com.taxiuser.fcm;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -10,6 +11,7 @@ import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.PowerManager;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
@@ -93,7 +95,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     // title = object.getString("title");
                     title = "New Booking Request";
                     key = object.getString("key");
-                    Intent intent1 = new Intent("Job_Status_Action");
+                    Intent intent1 = new Intent("Job_Status_Action_Accept");
                     Log.e("SendData ===== ", object.toString());
                     intent1.putExtra("status", "Cancel");
                     sendBroadcast(intent1);
@@ -126,7 +128,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     intent1.putExtra("status", "Arrived");
                     sendBroadcast(intent1);
                 } else if ("Accept".equals(status)) {
-                    title = "New Booking Request";
+                    title = "Booking Request accepted by driver";
                     key = object.getString("key");
                     Intent intent1 = new Intent("Job_Status_Action_Accept");
                     Log.e("SendData ===== ", object.toString());
@@ -151,8 +153,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 if (sharedPref.getBooleanValue(AppConstant.IS_REGISTER)) {
                     if ("POOL".equals(bookType)) {
+                        wakeUpScreen();
                         displayCustomTaxiNotifyForUserPool(status, title, key, object.toString());
                     } else {
+                        wakeUpScreen();
                         displayCustomTaxiNotifyForUser(status, title, key, object.toString());
                     }
                 }
@@ -269,5 +273,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Random rnd = new Random();
         return 100 + rnd.nextInt(9000);
     }
+
+
+    private void wakeUpScreen() {
+        PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
+        boolean isScreenOn = pm.isScreenOn();
+
+        Log.e("screen on......", "" + isScreenOn);
+        if (isScreenOn == false) {
+            @SuppressLint("InvalidWakeLockTag") PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.ON_AFTER_RELEASE, "MyLock");
+            wl.acquire(10000);
+            @SuppressLint("InvalidWakeLockTag") PowerManager.WakeLock wl_cpu = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyCpuLock");
+            wl_cpu.acquire(10000);
+        }
+    }
+
 
 }

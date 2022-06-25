@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.WindowManager;
 import android.widget.DatePicker;
+import android.widget.RadioGroup;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -97,7 +98,7 @@ public class RideOptionAct extends AppCompatActivity implements OnMapReadyCallba
     ModelLogin modelLogin;
     SharedPref sharedPref;
     Dialog dialogSerach;
-    String bookDate = "", bookTime = "", bookType = "";
+    String bookDate = "", bookTime = "", bookType = "",destinationAddress="";
     GoogleMap mMap;
     String paymentType = "", pickadd = "", dropadd = "";
     private PolylineOptions lineOptions;
@@ -177,18 +178,21 @@ public class RideOptionAct extends AppCompatActivity implements OnMapReadyCallba
                                     sanitizeDialog(bootype);
                                 } else {
                                     if (bootype.equalsIgnoreCase("Now")) {
-                                        if (Validation()) {
+                                        /*if (Validation()) {
                                             bookingRequest("NOW");
-                                        }
+                                        }*/
+                                        Validation("NOW");
                                     } else {
                                         openScheduleBookingDialog();
                                     }
                                 }
                             } else {
                                 if (bootype.equalsIgnoreCase("Now")) {
-                                    if (Validation()) {
+                                   /* if (Validation()) {
                                         bookingRequest("NOW");
-                                    }
+                                    }*/
+                                    Validation("NOW");
+
                                 } else {
                                     openScheduleBookingDialog();
                                 }
@@ -296,6 +300,11 @@ public class RideOptionAct extends AppCompatActivity implements OnMapReadyCallba
                             dialogSerach.dismiss();
                             bookNowDialog(intent.getStringExtra("request_id"));
                         }
+                    }
+                    else if("Cancel".equals(intent.getStringExtra("status"))){
+                        dialogSerach.dismiss();
+                        startActivity(new Intent(RideOptionAct.this,HomeAct.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                        finish();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -412,6 +421,7 @@ public class RideOptionAct extends AppCompatActivity implements OnMapReadyCallba
             DropOffLatLng = (LatLng) getIntent().getExtras().get("DropOff");
             pickadd = getIntent().getStringExtra("picadd");
             dropadd = getIntent().getStringExtra("dropadd");
+            destinationAddress = getIntent().getStringExtra("addressName");
         }
 
     }
@@ -420,23 +430,45 @@ public class RideOptionAct extends AppCompatActivity implements OnMapReadyCallba
 
         getCar();
 
+        binding.rdGrp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.rbCash:
+                        paymentType = "Cash";
+                        break;
+
+                    case R.id.rbCard:
+                        paymentType = "Card";
+                        break;
+
+                    case R.id.rbWallet:
+                        paymentType = "Wallet";
+                        break;
+
+                }
+            }
+        });
+
         binding.btnBack.setOnClickListener(v -> {
-            finish();
+           startActivity(new Intent(RideOptionAct.this,HomeAct.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
+           finish();
         });
 
         binding.btnScheduleRide.setOnClickListener(v -> {
             if (TextUtils.isEmpty(modelLogin.getResult().getMobile())) {
                 updateProfileDialog();
             } else {
-                getProfileNew("");
-            }
+                if(paymentType.equals("")) Toast.makeText(mContext, getString(R.string.select_pay_text), Toast.LENGTH_SHORT).show();
+                else  getProfileNew("");            }
         });
 
         binding.btnBook.setOnClickListener(v -> {
             if (TextUtils.isEmpty(modelLogin.getResult().getMobile())) {
                 updateProfileDialog();
             } else {
-                getProfileNew("Now");
+                if(paymentType.equals("")) Toast.makeText(mContext, getString(R.string.select_pay_text), Toast.LENGTH_SHORT).show();
+                else  getProfileNew("Now");
             }
         });
 
@@ -468,9 +500,11 @@ public class RideOptionAct extends AppCompatActivity implements OnMapReadyCallba
 
         dialogBinding.btnAgree.setOnClickListener(v -> {
             if (type.equalsIgnoreCase("Now")) {
-                if (Validation()) {
+               /* if (Validation()) {
                     bookingRequest("NOW");
-                }
+                }*/
+                Validation("NOW");
+
             } else {
                 openScheduleBookingDialog();
             }
@@ -552,6 +586,7 @@ public class RideOptionAct extends AppCompatActivity implements OnMapReadyCallba
 
         HashMap<String, String> parmas = new HashMap<>();
         parmas.put("request_id", sharedPref.getLanguage(AppConstant.LAST));
+        Log.e("Booking Cancel", "==>" + parmas);
 
         ProjectUtil.showProgressDialog(mContext, false, getString(R.string.please_wait));
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
@@ -569,6 +604,8 @@ public class RideOptionAct extends AppCompatActivity implements OnMapReadyCallba
                         if (object.getString("status").equals("1")) {
                             //  Toast.makeText(mContext, "" + object.getString("message"), Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
+                            startActivity(new Intent(RideOptionAct.this,HomeAct.class)
+                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
                             finish();
                         } else {
                             // Toast.makeText(mContext, "" + object.getString("message"), Toast.LENGTH_SHORT).show();
@@ -599,6 +636,7 @@ public class RideOptionAct extends AppCompatActivity implements OnMapReadyCallba
         param.put("droplat", "" + DropOffLatLng.latitude);
         param.put("droplon", "" + DropOffLatLng.longitude);
         param.put("user_id", modelLogin.getResult().getId());
+        param.put("city_name",destinationAddress);
 
         Log.e("fsdafsfadsf", "param = " + param);
 
@@ -712,9 +750,11 @@ public class RideOptionAct extends AppCompatActivity implements OnMapReadyCallba
             } else if (TextUtils.isEmpty(dialogBinding.etTime.getText().toString().trim())) {
                 Toast.makeText(mContext, getString(R.string.please_select_time), Toast.LENGTH_SHORT).show();
             } else {
-                if (Validation()) {
+               /* if (Validation()) {
                     bookingRequest("LATER");
-                }
+                }*/
+                Validation("LATER");
+
             }
         });
 
@@ -798,7 +838,7 @@ public class RideOptionAct extends AppCompatActivity implements OnMapReadyCallba
         param.put("lon", "" + PickUpLatLng.longitude);
         param.put("user_id", modelLogin.getResult().getId());
         param.put("timezone", TimeZone.getDefault().getID());
-        param.put("car_type_id", "1");
+        param.put("car_type_id", id);
         param.put("service_name", name);
 
         Log.e("getNearDriverDriver", "paramparam = " + param);
@@ -823,6 +863,7 @@ public class RideOptionAct extends AppCompatActivity implements OnMapReadyCallba
                             AddDefaultMarker();
 
                             CarTypeID = drivers.get(0).getCarTypeId();
+                            Log.e("car type====",CarTypeID);
 
                             for (ModelAvailableDriver driver : drivers) {
                                 int height = 95;
@@ -845,7 +886,8 @@ public class RideOptionAct extends AppCompatActivity implements OnMapReadyCallba
                             }
                         }
                     } else {
-
+                        CarTypeID="";
+                        Toast.makeText(RideOptionAct.this, "Driver Not available in your location ", Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     // Toast.makeText(mContext, "Exception = " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -890,17 +932,35 @@ public class RideOptionAct extends AppCompatActivity implements OnMapReadyCallba
             serviceName = "basic_car";
             Log.e("fasdasfdsf", "car.getId() = " + car.getId());
             getNearDriver(car.getId(), "basic_car");
+            //onSelectCar(cars.get(0), "basic_car");
+
         } else if (car.getCarName().equals("Normal")) {
             serviceName = "normal_car";
+            Log.e("fasdasfdsf", "car.getId() = " + car.getId());
             getNearDriver(car.getId(), "normal_car");
+
         } else if (car.getCarName().equals("Luxurious")) {
             serviceName = "luxurious_car";
+            Log.e("fasdasfdsf", "car.getId() = " + car.getId());
             getNearDriver(car.getId(), "luxurious_car");
         } else if (car.getCarName().equals("Pool")) {
             serviceName = "pool_car";
+            Log.e("fasdasfdsf", "car.getId() = " + car.getId());
             getNearDriver(car.getId(), "pool_car");
         }
-        binding.tvRideDistance.setText(car.getDistance());
+        binding.tvRideDistance.setText(round(Double.parseDouble(car.getDistance())) + " Min");
+    }
+
+
+    private int round(double d){
+        double dAbs = Math.abs(d);
+        int i = (int) dAbs;
+        double result = dAbs - (double) i;
+        if(result<0.3){ //you can change this value
+            return d<0 ? -i : i;
+        }else{
+            return d<0 ? -(i+1) : i+1;
+        }
     }
 
     @Override
@@ -954,11 +1014,10 @@ public class RideOptionAct extends AppCompatActivity implements OnMapReadyCallba
         return param;
     }
 
-    private boolean Validation() {
+    private void Validation(String type) {
         if (CarTypeID.equals("")) {
             Toast.makeText(mContext, getString(R.string.select_car_type), Toast.LENGTH_SHORT).show();
-            return false;
-        } else if (binding.rbCash.isChecked()) {
+        }/* else if (binding.rbCash.isChecked()) {
             paymentType = "Cash";
             return true;
         } else if (binding.rbCard.isChecked()) {
@@ -967,9 +1026,12 @@ public class RideOptionAct extends AppCompatActivity implements OnMapReadyCallba
         } else if (binding.rbWallet.isChecked()) {
             paymentType = "Wallet";
             return true;
-        } else {
-            Toast.makeText(mContext, getString(R.string.select_pay_text), Toast.LENGTH_SHORT).show();
-            return false;
+        }*/
+           else if(paymentType.equals("")){
+              Toast.makeText(mContext, getString(R.string.select_pay_text), Toast.LENGTH_SHORT).show();
+        }
+           else {
+            bookingRequest(type);
         }
     }
 

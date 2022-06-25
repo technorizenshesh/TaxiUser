@@ -277,7 +277,7 @@ public class SignUpAct extends AppCompatActivity {
 
                     if (jsonObject.getString("status").equals("1")) {
                         String mobileNumber = "+61" + binding.etPhone.getText().toString().trim();
-                       //  String mobileNumber = "+91" + binding.etPhone.getText().toString().trim();
+                    //    String mobileNumber = "+91" + binding.etPhone.getText().toString().trim();
 
                         startActivity(new Intent(mContext, VerifyAct.class)
                                 .putExtra("resgisterHashmap", params)

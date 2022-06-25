@@ -134,6 +134,7 @@ public class HomeAct extends AppCompatActivity implements OnMapReadyCallback {
 
         sharedPref = SharedPref.getInstance(mContext);
         modelLogin = sharedPref.getUserDetails(AppConstant.USER_DETAILS);
+        lineOptions = new PolylineOptions();
 
         FirebaseMessaging.getInstance().getToken().addOnSuccessListener(token -> {
             if (!TextUtils.isEmpty(token)) {
@@ -763,6 +764,7 @@ public class HomeAct extends AppCompatActivity implements OnMapReadyCallback {
         intent.putExtra("DropOff", DropOffLatLng);
         intent.putExtra("picadd", pickupAddress);
         intent.putExtra("dropadd", dropOffAddress);
+        intent.putExtra("addressName",ProjectUtil.getCompleteAddressString(HomeAct.this,DropOffLatLng.latitude,DropOffLatLng.longitude));
         startActivity(intent);
     }
 
@@ -904,6 +906,7 @@ public class HomeAct extends AppCompatActivity implements OnMapReadyCallback {
 
         dialogBinding.ivCancel.setOnClickListener(v -> {
             dialogFullscreen.dismiss();
+
         });
 
         dialogBinding.tvDone.setOnClickListener(v -> {

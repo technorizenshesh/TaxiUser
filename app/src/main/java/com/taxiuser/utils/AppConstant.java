@@ -1,8 +1,9 @@
 package com.taxiuser.utils;
 
 public class AppConstant {
+    //
 
-    public static String BASE_URL = "https://technorizen.com/australia_taxi/webservice/";
+    public static String BASE_URL = "https://technorizen.com/australia_taxi_new/webservice/";  //     https://technorizen.com/australia_taxi/webservice/
     public static String CURRENCY_KEY = "db9271f86fc362bc2155f17b2d618f4f";
 
     public static String STRIPE_TEST_KEY = "pk_test_51KTZwKIw5rTloFYcnhgyfZm6LkEa3QkHefDq5MgvHTp2axO7OdRX3ot91xufrPBeKvkKuXO7knIOVcx5qmsjcIul00xbzocfa6";

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -61,12 +62,17 @@ public class AdapterCarTypes extends RecyclerView.Adapter<AdapterCarTypes.MyRide
         holder.binding.tvTotal.setText(AppConstant.CURRENCY + " " + String.format("%.2f",finalValue));
 
         holder.binding.getRoot().setOnClickListener(v -> {
-            for (int i = 0; i < arrayList.size(); i++) {
-                arrayList.get(i).setSelected(false);
+            if(arrayList.get(position).getCabFind().equals("no_cab")){
+                Toast.makeText(mContext, "There is no taxi available..", Toast.LENGTH_SHORT).show();
             }
-            arrayList.get(position).setSelected(true);
-            listener.onCarSelected(arrayList.get(position), "basic_car");
-            notifyDataSetChanged();
+           else {
+                for (int i = 0; i < arrayList.size(); i++) {
+                    arrayList.get(i).setSelected(false);
+                }
+                arrayList.get(position).setSelected(true);
+                listener.onCarSelected(arrayList.get(position), "basic_car");
+                notifyDataSetChanged();
+            }
         });
 
     }
