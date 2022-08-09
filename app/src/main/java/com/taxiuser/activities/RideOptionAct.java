@@ -112,7 +112,7 @@ public class RideOptionAct extends AppCompatActivity implements OnMapReadyCallba
     private String carAmount = "";
     Timer timer;
     private String serviceName = "";
-    private String registerId = "";
+    private String registerId = "",serviceId="",serviceType="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -422,6 +422,9 @@ public class RideOptionAct extends AppCompatActivity implements OnMapReadyCallba
             pickadd = getIntent().getStringExtra("picadd");
             dropadd = getIntent().getStringExtra("dropadd");
             destinationAddress = getIntent().getStringExtra("addressName");
+            serviceId = getIntent().getStringExtra("service_id");
+            serviceType = getIntent().getStringExtra("service_type");
+
         }
 
     }
@@ -636,10 +639,11 @@ public class RideOptionAct extends AppCompatActivity implements OnMapReadyCallba
         param.put("droplat", "" + DropOffLatLng.latitude);
         param.put("droplon", "" + DropOffLatLng.longitude);
         param.put("user_id", modelLogin.getResult().getId());
-        param.put("city_name",destinationAddress);
+        param.put("city_name",ProjectUtil.getAddress(RideOptionAct.this,DropOffLatLng.latitude,DropOffLatLng.longitude));
+        param.put("service_id",serviceId);
+        param.put("service_type",serviceType);
 
         Log.e("fsdafsfadsf", "param = " + param);
-
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
         Call<ResponseBody> call = api.getCarTypeListApi(param);
         call.enqueue(new Callback<ResponseBody>() {
@@ -1009,6 +1013,9 @@ public class RideOptionAct extends AppCompatActivity implements OnMapReadyCallba
         param.put("picklaterdate", bookDate);
         param.put("route_img", "");
         param.put("amount", carAmount);
+        param.put("service_id",serviceId);
+        param.put("service_type",serviceType);
+
         Log.e("param", param.toString().replace(", ", "&"));
         Log.e("param", "" + param);
         return param;

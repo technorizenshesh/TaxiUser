@@ -60,6 +60,10 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.taxiuser.R;
 import com.taxiuser.adapters.AdapterRecentsLocations;
+import com.taxiuser.bottomsheet.ServListener;
+import com.taxiuser.bottomsheet.ServiceTypeBottomSheet;
+import com.taxiuser.bottomsheet.ServiceTypeListener;
+import com.taxiuser.bottomsheet.ServicesBottomSheet;
 import com.taxiuser.databinding.ActivityHomeBinding;
 import com.taxiuser.databinding.AddressPickDialogFullscreenBinding;
 import com.taxiuser.databinding.ContactUsDialogBinding;
@@ -98,7 +102,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeAct extends AppCompatActivity implements OnMapReadyCallback {
+public class HomeAct extends AppCompatActivity implements OnMapReadyCallback, ServListener, ServiceTypeListener {
 
     private static final int AUTOCOMPLETE_FROM_PLACE_CODE = 101;
     private static final int AUTOCOMPLETE_EDIT_WORK_PLACE_CODE = 103;
@@ -758,14 +762,17 @@ public class HomeAct extends AppCompatActivity implements OnMapReadyCallback {
         dialogFullscreen.dismiss();
         currentLocationMarker = null;
         mMap.clear();
-        Intent intent = new Intent(this, RideOptionAct.class);
-        intent.putExtra("pollyLine", lineOptions);
-        intent.putExtra("PickUp", PickUpLatLng);
-        intent.putExtra("DropOff", DropOffLatLng);
-        intent.putExtra("picadd", pickupAddress);
-        intent.putExtra("dropadd", dropOffAddress);
-        intent.putExtra("addressName",ProjectUtil.getCompleteAddressString(HomeAct.this,DropOffLatLng.latitude,DropOffLatLng.longitude));
-        startActivity(intent);
+        //   Intent intent = new Intent(this, RideOptionAct.class);
+        //   intent.putExtra("pollyLine", lineOptions);
+        //   intent.putExtra("PickUp", PickUpLatLng);
+        //   intent.putExtra("DropOff", DropOffLatLng);
+        //   intent.putExtra("picadd", pickupAddress);
+        //   intent.putExtra("dropadd", dropOffAddress);
+        //   intent.putExtra("addressName",ProjectUtil.getCompleteAddressString(HomeAct.this,DropOffLatLng.latitude,DropOffLatLng.longitude));
+        //   startActivity(intent);
+        new ServicesBottomSheet(ProjectUtil.getAddress(mContext, DropOffLatLng.latitude, DropOffLatLng.longitude), PickUpLatLng.latitude + "", PickUpLatLng.longitude + "", DropOffLatLng.latitude + ""
+                , DropOffLatLng.longitude + "").callBack(this::onService).show(getSupportFragmentManager(), "");
+
     }
 
     private void gotoRideOptionOnClick() {
@@ -773,14 +780,20 @@ public class HomeAct extends AppCompatActivity implements OnMapReadyCallback {
         Log.e("asdfasdasdas", "gotoRideOptionOnClick drop Address tvOffice = " + dropOffAddress);
         currentLocationMarker = null;
         mMap.clear();
-        Intent intent = new Intent(this, RideOptionAct.class);
-        intent.putExtra("pollyLine", lineOptions);
-        intent.putExtra("PickUp", PickUpLatLng);
-        intent.putExtra("DropOff", DropOffLatLng);
-        intent.putExtra("picadd", pickupAddress);
-        intent.putExtra("dropadd", dropOffAddress);
-        startActivity(intent);
+        //   Intent intent = new Intent(this, RideOptionAct.class);
+        //   intent.putExtra("pollyLine", lineOptions);
+        //     intent.putExtra("PickUp", PickUpLatLng);
+        //    intent.putExtra("DropOff", DropOffLatLng);
+        //    intent.putExtra("picadd", pickupAddress);
+        //     intent.putExtra("dropadd", dropOffAddress);
+        //     startActivity(intent);
+
+        new ServicesBottomSheet(ProjectUtil.getAddress(mContext, DropOffLatLng.latitude, DropOffLatLng.longitude), PickUpLatLng.latitude + "", PickUpLatLng.longitude + "", DropOffLatLng.latitude + ""
+                , DropOffLatLng.longitude + "").callBack(this::onService).show(getSupportFragmentManager(), "");
+
+
     }
+
 
     public void AddDefaultMarker() {
         if (mMap != null) {
@@ -1387,7 +1400,7 @@ public class HomeAct extends AppCompatActivity implements OnMapReadyCallback {
         getRecentLocationNew();
         startLocationUpdates();
         BindExecutor();
-        // getCurrentBooking();
+        getCurrentBooking();
     }
 
     private void getCurrentBooking() {
@@ -1513,7 +1526,7 @@ public class HomeAct extends AppCompatActivity implements OnMapReadyCallback {
                             }
                         }
                     } else {
-                         mMap.clear();
+                        mMap.clear();
                         PicUpMarker.position(PickUpLatLng);
                         mMap.addMarker(PicUpMarker);
                         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(getCameraPositionWithBearing(PickUpLatLng)));
@@ -1551,6 +1564,25 @@ public class HomeAct extends AppCompatActivity implements OnMapReadyCallback {
         ProjectUtil.exitAppDialog(mContext);
     }
 
+    @Override
+    public void onService(int position, String id) {
+        new ServiceTypeBottomSheet(id).callBack(this::onType).show(getSupportFragmentManager(), "");
+    }
+
+    @Override
+    public void onType(String type, String service) {
+        Log.e("Selected valuesss==", type + "=====" + service);
+        Intent intent = new Intent(this, RideOptionAct.class);
+        intent.putExtra("pollyLine", lineOptions);
+        intent.putExtra("PickUp", PickUpLatLng);
+        intent.putExtra("DropOff", DropOffLatLng);
+        intent.putExtra("picadd", pickupAddress);
+        intent.putExtra("dropadd", dropOffAddress);
+        intent.putExtra("addressName", ProjectUtil.getCompleteAddressString(HomeAct.this, DropOffLatLng.latitude, DropOffLatLng.longitude));
+        intent.putExtra("service_id",service);
+        intent.putExtra("service_type",type);
+        startActivity(intent);
+    }
 }
 
 

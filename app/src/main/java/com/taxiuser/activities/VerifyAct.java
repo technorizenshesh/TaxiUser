@@ -286,7 +286,12 @@ public class VerifyAct extends AppCompatActivity {
         RequestBody last_name = RequestBody.create(MediaType.parse("text/plain"), paramHash.get("last_name"));
         RequestBody email = RequestBody.create(MediaType.parse("text/plain"), paramHash.get("email"));
         RequestBody mobile = RequestBody.create(MediaType.parse("text/plain"), paramHash.get("mobile"));
+
+        RequestBody country = RequestBody.create(MediaType.parse("text/plain"), paramHash.get("country"));
+        RequestBody state = RequestBody.create(MediaType.parse("text/plain"), paramHash.get("state"));
         RequestBody city = RequestBody.create(MediaType.parse("text/plain"), paramHash.get("city"));
+
+
         RequestBody address = RequestBody.create(MediaType.parse("text/plain"), paramHash.get("address"));
         RequestBody register_id = RequestBody.create(MediaType.parse("text/plain"), paramHash.get("register_id"));
         RequestBody lat = RequestBody.create(MediaType.parse("text/plain"), paramHash.get("lat"));
@@ -305,7 +310,7 @@ public class VerifyAct extends AppCompatActivity {
 
         Api api = ApiFactory.getClientWithoutHeader(mContext).create(Api.class);
         Call<ResponseBody> call = api.signUpDriverCallApi(first_name,
-                last_name, email, mobile, city, address, register_id, lat,
+                last_name, email, mobile, country, state, city, address, register_id, lat,
                 lon, password, type, step, userName, workplace, workLat, workLon, profileFilePart);
         call.enqueue(new Callback<ResponseBody>() {
             @Override

@@ -214,7 +214,7 @@
     <string name="your_feedback_is_very_impoortant_to_us_we_consider_your_feedback_very_seriously_and_work_hard_to_provide_you_with_the_best_possible_solution_at_the_earliest">Your feedback is very impoortant to us. We consider your feedback very seriously and work hard to provide you with the best possible solution at the earliest.</string>
     <string name="what_s_your_feedback_about">What\'s your feedback about?</string>
     <string name="tap_to_write">Tap to write...</string>
-    <string name="please_select_service_type">Please select service type</string>
+    <string name="please_select_service_type">Please select service</string>
     <string name="help_keep_your_community_safe">Help Keep your community safe</string>
     <string name="please_take_the_following_actions_to_keep_cummunity_safe">Please take the following actions to keep cummunity safe</string>
     <string name="wear_a_face_cover_or_mask">Wear a face cover or mask.</string>
@@ -280,4 +280,26 @@
     <string name="need_to_send_100_pkr">You need to send atleast 100 PKR from your wallet</string>
     <string name="sar_currency_text">You need to add at least 5 SAR to your wallet</string>
     <string name="aed_currency_text">You need to add at least 5 AED to your wallet</string>
+
+
+    <string name="enter_country_text">Please select your country</string>
+    <string name="enter_state_text">Please select your state</string>
+    <string name="no_data_found">no data found</string>
+    <string name="select">Select</string>
+    <string name="select_the_service_type">Service Type</string>
+    <string name="please_select_service">Select service type</string>
+
+    <string-array name="city">
+        <item>City</item>
+    </string-array>
+
+
+    <string-array name="state">
+        <item>State</item>
+    </string-array>
+
+
+    <string-array name="country">
+        <item>Country</item>
+    </string-array>
 </resources>

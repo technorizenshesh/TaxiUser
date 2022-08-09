@@ -460,7 +460,7 @@ public class ProjectUtil {
     }
 
 
-    public String getAddress(Context context, double latitude, double longitute) {
+    public static String getAddress(Context context, double latitude, double longitute) {
         List<Address> addresses;
         String addressStreet="",city="";
         Geocoder geocoder = new Geocoder(context, Locale.getDefault());

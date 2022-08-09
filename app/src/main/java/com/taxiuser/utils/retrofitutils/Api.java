@@ -8,6 +8,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -276,8 +277,9 @@ public interface Api {
                                            @Part("last_name") RequestBody last_name,
                                            @Part("email") RequestBody email,
                                            @Part("mobile") RequestBody mobile,
-                                           @Part("city") RequestBody city,
-                                           @Part("address") RequestBody address,
+                                           @Part("country") RequestBody country,
+                                           @Part("state") RequestBody state,
+                                           @Part("city") RequestBody city,                                           @Part("address") RequestBody address,
                                            @Part("register_id") RequestBody register_id,
                                            @Part("lat") RequestBody lat,
                                            @Part("lon") RequestBody lon,
@@ -299,6 +301,28 @@ public interface Api {
                                      @Part("car_number") RequestBody carNumber,
                                      @Part("year_of_manufacture") RequestBody year_of_manufacture,
                                      @Part MultipartBody.Part file1);
+
+
+
+    @GET("country_list")
+    Call<ResponseBody> getAllCountry();
+
+    @FormUrlEncoded
+    @POST("state_list")
+    Call<ResponseBody> getAllState(@FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @POST("city_list")
+    Call<ResponseBody> getAllCity(@FieldMap Map<String, String> params);
+
+
+    @FormUrlEncoded
+    @POST("car_list")
+    Call<ResponseBody> getAllServices(@FieldMap Map<String, String> params);
+
+
+
+
 
 }
 

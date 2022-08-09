@@ -3,7 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/MyProjects/TaxiUser/app/src/main/res/drawable/rounded_select_yellow_bg.xml" value="0.14907407407407408" />
+        <entry key="..\:/MyProjects/TaxiUser/app/src/main/res/drawable/rounded_unselect_white_bg.xml" value="0.14907407407407408" />
         <entry key="..\:/MyProjects/TaxiUser/app/src/main/res/layout/accept_driver_dialog.xml" value="0.1" />
+        <entry key="..\:/MyProjects/TaxiUser/app/src/main/res/layout/activity_active_booking.xml" value="0.1" />
+        <entry key="..\:/MyProjects/TaxiUser/app/src/main/res/layout/activity_chating.xml" value="0.12395833333333334" />
         <entry key="..\:/MyProjects/TaxiUser/app/src/main/res/layout/activity_home.xml" value="0.1" />
         <entry key="..\:/MyProjects/TaxiUser/app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="..\:/MyProjects/TaxiUser/app/src/main/res/layout/activity_ride_option.xml" value="0.1" />
@@ -12,7 +16,11 @@
         <entry key="..\:/MyProjects/TaxiUser/app/src/main/res/layout/address_pick_dialog_fullscreen.xml" value="0.1" />
         <entry key="..\:/MyProjects/TaxiUser/app/src/main/res/layout/app_bar_dashboard.xml" value="0.1" />
         <entry key="..\:/MyProjects/TaxiUser/app/src/main/res/layout/dialog_search_driver.xml" value="0.20416666666666666" />
+        <entry key="..\:/MyProjects/TaxiUser/app/src/main/res/layout/fragment_service.xml" value="0.16041666666666668" />
+        <entry key="..\:/MyProjects/TaxiUser/app/src/main/res/layout/fragment_service_type.xml" value="0.20416666666666666" />
         <entry key="..\:/MyProjects/TaxiUser/app/src/main/res/layout/item_ride_book.xml" value="0.1875" />
+        <entry key="..\:/MyProjects/TaxiUser/app/src/main/res/layout/item_servicess.xml" value="0.20416666666666666" />
+        <entry key="..\:/MyProjects/TaxiUser/app/src/main/res/layout/item_spinner.xml" value="0.20416666666666666" />
         <entry key="..\:/MyProjects/TaxiUser/app/src/main/res/layout/schedule_booking_dialog.xml" value="0.18854166666666666" />
       </map>
     </option>

@@ -508,6 +508,7 @@ public class WalletAct extends AppCompatActivity {
                             Log.e("changeToAUD", "currencyAmountRoundOFF = " + String.format("%.2f", walletAmountWithCurrencyChange));
                             Log.e("changeToAUD", "walletAmountWithCurrencyChange = " + walletAmountWithCurrencyChange);
                         } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
 

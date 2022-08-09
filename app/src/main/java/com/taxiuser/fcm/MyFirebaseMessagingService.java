@@ -54,6 +54,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 JSONObject object = new JSONObject(data.get("message"));
 
                 try {
+                    key = object.getString("key");
+                    status = object.getString("status");
+                } catch (Exception e) {
+                }
+
+
+
+
+                try {
                     noti_type = object.getString("notifi_type");
                 } catch (Exception e) {
                 }
@@ -73,11 +82,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 } catch (Exception e) {
                 }
 
-                try {
-                    key = object.getString("key");
-                    status = object.getString("status");
-                } catch (Exception e) {
-                }
 
                 Log.e("fasdfsadfsfs", "key = " + key);
                 Log.e("fasdfsadfsfs", "bookindStatus = " + bookindStatus);
@@ -149,6 +153,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     sendBroadcast(intent1);
                 }
 
+                else if ("push notification".equals(status)) {
+                    title = "New Push Notification";
+
+                }
+
                 sharedPref = SharedPref.getInstance(this);
 
                 if (sharedPref.getBooleanValue(AppConstant.IS_REGISTER)) {
@@ -157,7 +166,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         displayCustomTaxiNotifyForUserPool(status, title, key, object.toString());
                     } else {
                         wakeUpScreen();
-                        displayCustomTaxiNotifyForUser(status, title, key, object.toString());
+                      if(status.equals("push notification"))  displayCustomTaxiNotifyForUser(status, title, object.getString("message"), object.toString());
+                        else   displayCustomTaxiNotifyForUser(status, title, key, object.toString());
                     }
                 }
 
